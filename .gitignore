@@ -1,0 +1,33 @@
+./.gitignore
+
+# Config
+./Config/autostart
+./Config/dconf
+./Config/eww_my
+./Config/fcitx
+./Config/fcitx5
+./Config/francophonie
+./Config/GIMP
+./Config/gnvim
+./Config/knvim
+./Config/go-musicfox
+./Config/gtk-3.0
+./Config/ibus
+./Config/light
+./Config/lnvim
+./Config/music-you
+./Config/nvim_new
+./Config/pulse
+./Config/QQ
+./Config/xfce4
+./Config/user-dirs.dirs
+./Config/user-dirs.locale
+
+# Home
+./Home/.gitconfig
+./Home/.histfile
+./Home/.ssh
+./Home/Picture/mypictures
+./Home/Documents/Learn
+
+
