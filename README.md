@@ -1,7 +1,14 @@
 # Picture
-![Home/Picture/Screenshots/hyprland/swappy-20230821-004518.png]
 
-![Home/Picture/wallpapers/swappy-20230826-011849.png]
+
+<p align="center">
+  <img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230821-004518.png" width=49%>
+  <img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230826-011849.png" width=49%>
+</p>
+
+<p align="center">
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230828-055313.png" width=100%>
+</p>
 
 ![Home/Picture/wallpapers/swappy-20230828-055313.png]
 
