@@ -8,7 +8,7 @@
     "margin-right": 0,
     "modules-left": ["image#face", "wlr/workspaces", "custom/playerctl", "custom/playerlabel"], //, "custom/launcher"
     "modules-center": ["cpu", "memory", "disk"],
-    "modules-right": ["tray", "custom/randwall", "network", "pulseaudio",  "clock", "battery"],
+    "modules-right": ["tray", "custom/randwall", "network","backlight", "pulseaudio",  "clock", "battery"],
     // Modules configuration
 	"clock": {
 		"format": " {:%H:%M}",
@@ -129,17 +129,17 @@
 		"format-icons": {
 			"default": ["󰕿", "󰖀", "󰕾"]
 		},
-		"on-click": "bash ~/.scripts/volume mute",
+		"on-click": "pavucontrol-qt",
     "on-scroll-up": "bash ~/.scripts/volume up",
     "on-scroll-down": "bash ~/.scripts/volume down",
     "scroll-step": 5,
-		"on-click-right": "pavucontrol"
+		"on-click-right": "pavucontrol-qt"
   },
 
   "custom/randwall": {
     "format": "󰏘",
-    "on-click": "bash $HOME/.config/hypr/randwall.sh",
-    "on-click-right": "bash $HOME/.config/hypr/wall.sh"
+    "on-click": "bash $HOME/.config/hypr/scripts/randwall.sh /home/awarewen/Pictures/mypictures/横屏壁纸/",
+    "on-click-right": "bash $HOME/.config/hypr/scripts/wall.sh /home/awarewen/Pictures/mypictures/横屏壁纸/"
   },
   "custom/launcher": {
     "format": "󰈸",

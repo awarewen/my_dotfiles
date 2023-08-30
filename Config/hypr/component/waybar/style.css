@@ -127,13 +127,10 @@ window#waybar {
 }
 
 #backlight {
-    background-color: #24283b;
-    color: #db4b4b;
-    border-radius: 0px 0px 0px 0px;
-    margin: 5px;
+    /*background-color: #24283b;*/
+    color: #f4d9e1;
+    border-radius: 8px;
     margin-left: 0px;
-    margin-right: 0px;
-    padding: 10px 0px;
 }
 
 #network {
