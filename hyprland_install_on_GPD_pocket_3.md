@@ -1,4 +1,4 @@
-# 安装Arch linux (基础系统安装)
+ 安装Arch linux (基础系统安装)
 1. 修复以前安装时遗留的问题
 3. 重新整理全部配置，以适应更加现代的操作环境
 
@@ -115,7 +115,7 @@ mkinitcpio -P
 
 - Install
 ````
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
+grub-install /dev/Drivername
 grub-mkconfig -o /boot/grub/grub.cfg
 ````
 
