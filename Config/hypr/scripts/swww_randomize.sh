@@ -19,12 +19,12 @@ INTERVAL=300
 
 while true; do
 	#if pgrep -x swaylock; then continue; fi   ## 添加新功能在lock情况下停止切换壁纸行为
-	find "$1" |
-		while read -r img; do
+	find "$1"
+  | while read -r img; do
 			echo "$((RANDOM % 1000)):$img"
-		done |
-		sort -n | cut -d':' -f2- |
-		while read -r img; do
+		done
+  | sort -n | cut -d':' -f2-
+  | while read -r img; do
 			sleep $INTERVAL
 
 			COR=$(printf "%02x" $(($RANDOM % 156 + 100)))
