@@ -149,7 +149,7 @@ echo LANG=en_US.UTF-8 > /etc/locale.conf
 ````
 echo xxx > /etc/hostname
 ````
-设置hosts 局域网 (hostname is /etc/hostname you set)
+设置hosts 局域网 (hostname在你的/etc/hostname文件中设置)
 ```
 127.0.0.1	localhost
 127.0.0.1	::1
@@ -161,15 +161,14 @@ echo xxx > /etc/hostname
 passwd root
 
 - 创建新用户并添加到 wheel 用户组
-useradd -m -G wheel -s /bin/bash user
+useradd -m -G wheel -s /bin/bash username
 
 - 设置密码
-passwd 'the_user_name'
+passwd username
 
 - 为 wheel 用户组更改用户权限
     EDIOR=vim visudo
-    - 找到 'Uncomment to allow members of group wheel to execute any command' 将下一行配置取消注释
-
+    -  将'%wheel ALL=(ALL:ALL)' 取消注释
 ````
 
 ## AUR
@@ -243,8 +242,9 @@ paru -S wlr-randr
 
 ## Dotfiles install
 https://github.com/flick0/dotfiles/tree/dreamy
-
+```
 paru -S hyprland-git waybar-hyprland-git cava waybar-mpris-git python rustup kitty fish wofi xdg-desktop-portal-hyprland-git tty-clock-git swaylockd grim slurp pokemon-colorscripts-git starship jq dunst wl-clipboard swaylock-effects-git swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light blueman network-manager-applet g4music btop polkit-kde-agent
+```
 ```
 git clone -b dreamy https://github.com/flick0/dotfiles
 cd dotfiles
@@ -266,9 +266,9 @@ cp ./target/release/rgb ~/.config/hypr/scripts/
 ```
 
 ### https://github.com/PROxZIMA/.dotfiles
-
+```
 paru -S swaync  playerctl   mpd mpd-mpris mpv mpv-mpris qt5-base qt5-wayland qt6-base qt6-wayland lsd geany bat cliphist-bin gamemode  g4music wlogout visual-studio-code-bin  sddm-git boo-sddm-git proxzima-plymouth-git yad blueman network-manager-applet libinput-gestures light --needed
-
+```
 
 go-musicfox firefox
 
@@ -504,4 +504,3 @@ m -> mouse, see below
 ## (kooha, peek)
 - [phw/peek: Only work on xwayland](https://github.com/phw/peek)
 - [SeaDve/Kooha: Elegantly record your screen](https://github.com/SeaDve/Kooha)
-

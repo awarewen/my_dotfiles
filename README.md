@@ -1,4 +1,4 @@
-# Picture
+# Picture （效果展示）
 
 
 <p align="center">
@@ -9,9 +9,6 @@
 <p align="center">
 <img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230828-055313.png" width=100%>
 </p>
-
-![Home/Picture/wallpapers/swappy-20230828-055313.png]
-
 ---
 
 # 说明
@@ -22,7 +19,7 @@ OS  : Arch linux
 WM  : Hyprland
 Bar : waybar hyprland
 Terminal: kitty,foot(bk)
-File-manager: thunar,ranger
+File-manager: thunar(GUI),ranger(终端使用)
 Resolutions: 1920x1200, 3840x2160
 ````
 
