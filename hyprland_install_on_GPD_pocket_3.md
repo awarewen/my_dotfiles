@@ -115,7 +115,7 @@ mkinitcpio -P
 
 - Install
 ````
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
+grub-install /dev/Drivername
 grub-mkconfig -o /boot/grub/grub.cfg
 ````
 
@@ -149,7 +149,7 @@ echo LANG=en_US.UTF-8 > /etc/locale.conf
 ````
 echo xxx > /etc/hostname
 ````
-设置hosts 局域网 (hostname is /etc/hostname you set)
+设置hosts 局域网 (hostname在你的/etc/hostname文件中设置)
 ```
 127.0.0.1	localhost
 127.0.0.1	::1
@@ -161,15 +161,14 @@ echo xxx > /etc/hostname
 passwd root
 
 - 创建新用户并添加到 wheel 用户组
-useradd -m -G wheel -s /bin/bash user
+useradd -m -G wheel -s /bin/bash username
 
 - 设置密码
-passwd 'the_user_name'
+passwd username
 
 - 为 wheel 用户组更改用户权限
     EDIOR=vim visudo
-    - 找到 'Uncomment to allow members of group wheel to execute any command' 将下一行配置取消注释
-
+    -  将'%wheel ALL=(ALL:ALL)' 取消注释
 ````
 
 ## AUR
@@ -243,8 +242,9 @@ paru -S wlr-randr
 
 ## Dotfiles install
 https://github.com/flick0/dotfiles/tree/dreamy
-
+```
 paru -S hyprland-git waybar-hyprland-git cava waybar-mpris-git python rustup kitty fish wofi xdg-desktop-portal-hyprland-git tty-clock-git swaylockd grim slurp pokemon-colorscripts-git starship jq dunst wl-clipboard swaylock-effects-git swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light blueman network-manager-applet g4music btop polkit-kde-agent
+```
 ```
 git clone -b dreamy https://github.com/flick0/dotfiles
 cd dotfiles
@@ -266,9 +266,9 @@ cp ./target/release/rgb ~/.config/hypr/scripts/
 ```
 
 ### https://github.com/PROxZIMA/.dotfiles
-
+```
 paru -S swaync  playerctl   mpd mpd-mpris mpv mpv-mpris qt5-base qt5-wayland qt6-base qt6-wayland lsd geany bat cliphist-bin gamemode  g4music wlogout visual-studio-code-bin  sddm-git boo-sddm-git proxzima-plymouth-git yad blueman network-manager-applet libinput-gestures light --needed
-
+```
 
 go-musicfox firefox
 
@@ -312,13 +312,14 @@ sudo systemctl enable NetworkManager-dispatcher.service
           pipewire-pulse  :取代 pulseaudio 和 pulseaudio-bluetooth，（使用 pipewire-pulse.server 替换 pulseaudio.server）'pactl info 查看 "Server Name:PulseAudio (on PipeWire)'" 即成功
           pipewire-audio  :PulseAudio 和 JACK 兼容的服务器实现和 API兼容库来替代它们，处理蓝牙设备连接
           pipewire-alsa   :取代 ALSA 客户端（如果安装了pulseaudio-alsa ，请移除它）
-          pipewire-jac   :jack 客户端启动支持
+          pipewire-jac   :jack 客户端启动支持 # 暂未在仓库中找到该包，安装会报错
           pipewire-zeroconf   :pipewire 零配置支持（自动配置）
           alsa-utils :提供alsamixer amixer 工具
           lib32-libpipewire 1:0.3.70-1
           libpipewire
           pipewire-jack
-
+# 一键安装：
+paru -S pipewire lib32-pipewire wireplumber pipewire-pulse pulseaudio-bluetooth pipewire-audio pipewire-alsa pipewire-zeroconf alsa-utils lib32-libpipewire libpipewire pipewire-jack
  - GPD-Pocket-3 : /etc/modprobe.d/alsa.conf
 ___________________________________________
     options snd-intel-dspcfg dsp_driver=1
@@ -504,4 +505,3 @@ m -> mouse, see below
 ## (kooha, peek)
 - [phw/peek: Only work on xwayland](https://github.com/phw/peek)
 - [SeaDve/Kooha: Elegantly record your screen](https://github.com/SeaDve/Kooha)
-
