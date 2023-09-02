@@ -160,7 +160,7 @@
 //    "on-click": "bash $HOME/.config/rofi/launcher.sh",
     "on-click": "bash $HOME/.config/hypr/component/waybar/scripts/wvkbd.sh",
 //    "on-click": "wofi --show drun -I -a -n -W 500 -H 376 -s ~/.config/wofi/themes/gruvbox.css",
-    "on-click-right": "bash $HOME/.config/rofi/run.sh"
+    "on-click-right": "bash $HOME/.config/rofi/launcher.sh"
 //    "on-click-right": "wofi --show run -I -a -n -W 500 -H 376 -s ~/.config/wofi/themes/gruvbox.css"  
   },
 
