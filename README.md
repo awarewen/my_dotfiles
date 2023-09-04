@@ -68,6 +68,8 @@ Resolutions: 1920x1200, 3840x2160
 ## Dotfile 依赖列表
 ````
 # Hyprland 正常运行所需
+## xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk, qt5-wayland, qt6-wayland 作为 portal support
+# ------------------------------------------------
 yay -S python rustup hyprland xdg-desktop-portal-hyprland polkit-kde-agent qt5-base qt5-wayland qt6-base qt6-wayland wl-clipboard playerctl kitty network-manager-applet light firefox-developer-edition swaylock swayidle swaylock-effects-git grim slurp rofi
 
 
@@ -86,6 +88,26 @@ yay -S xdg-user-dirs cava btop g4music music-you go-musicfox vimiv tlp mpv scpcr
 ````
 git submodule update --init --recursive
 ````
+
+## 配置拆分
+
+## Clipboard setting (剪切板配置)
+- `wl-clipboard`: 提供 wayland 剪贴板支持
+
+- `cliphist`: 支持文本和图片的剪贴板包装应用
+  - clipboard store show whith wofi
+
+- wl-clip-persist: 长时间保存剪贴板数据
+````
+# ~/.config/hypr/hyprland/keybind.conf
+bind = SUPER, V, exec, cliphist list | rofi -dmenu -theme "$HOME/.config/rofi/launchers/type-2/style-1" | cliphist decode | wl-copy
+
+# ~/.config/hypr/hyprland/exec-once.conf
+exec-once = wl-paste --type text --watch cliphist store   #Stores only text data
+exec-once = wl-paste --type image --watch cliphist store  #Stores only image data
+exec-once = wl-clip-persist --clipboard both              # Use Regular and Primary clipboard,long :w
+````
+
 
 ## 重要
 还有很多东西没有补充完整，每天有空就会完善。
