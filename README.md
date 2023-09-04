@@ -40,7 +40,7 @@ Resolutions: 1920x1200, 3840x2160
     - 屏幕亮度              : light
     - 通知                  : dunst
     - 系统信息显示          : fastfetch (待更新至 config.jsonc 配置格式)
-    - Bar                   : waybar-hyprland (待考虑 EWW)
+    - Bar                   : waybar-hyprland-git (待考虑 EWW)
     - 浏览器                : firefox-developer-edition
     - 文件管理器            : thunar(GUI),ranger(CLI)
     - 终端                  : kitty
@@ -57,6 +57,7 @@ Resolutions: 1920x1200, 3840x2160
     - 手机投屏              : scpcrcpy-appimage
     - 局域网文件分享        : localsend-bin
     - GAMA 屏幕伽马值       : wlsunset
+    - 串口连接              : tinyserial(提供com命令)
 
 # 笔记本上可用的软件 (适配于GPD pocket 3)
     - 电源管理              : tlp
@@ -68,13 +69,13 @@ Resolutions: 1920x1200, 3840x2160
 ## Dotfile 依赖列表
 ````
 # Hyprland 正常运行所需
-## xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk, qt5-wayland, qt6-wayland 作为 portal support
+## xdg-desktop-portal-hyprland-git, xdg-desktop-portal-gtk-git(support file picker), qt5-wayland, qt6-wayland 作为 portal support
 # ------------------------------------------------
-yay -S python rustup hyprland xdg-desktop-portal-hyprland polkit-kde-agent qt5-base qt5-wayland qt6-base qt6-wayland wl-clipboard playerctl kitty network-manager-applet light firefox-developer-edition swaylock swayidle swaylock-effects-git grim slurp rofi
+yay -S python rustup hyprland-git xdg-desktop-portal-hyprland-git-git xdg-desktop-portal-gtk-git polkit-kde-agent qt5-base qt5-wayland qt6-base qt6-wayland wl-clipboard playerctl kitty network-manager-applet light firefox-developer-edition swaylock swayidle swaylock-effects-git grim slurp rofi
 
 
 # 建议的必要程序
-yay -S xdg-desktop-portal waybar-hyprland cliphist wl-clip-persist-git neovim code code-features code-marketplace ranger thunar swappy
+yay -S xdg-desktop-portal waybar-hyprland-git cliphist wl-clip-persist-git neovim code code-features code-marketplace ranger thunar swappy
 
 # 建议的可选程序
 yay -S xdg-user-dirs cava btop g4music music-you go-musicfox vimiv tlp mpv scpcrcpy-appimage localsend-bin wlsunset 
