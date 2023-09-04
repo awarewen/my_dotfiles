@@ -47,6 +47,7 @@ Resolutions: 1920x1200, 3840x2160
     - 锁屏                  : swaylock, swayidle (DPMS support), swaylock-effects-git
     - 剪切板                : cliphist , wl-clip-persist-git, wl-clipboard
     - 截屏                  : grim, slurp, swappy
+    - 应用启动器            : rofi
 
 # 可选的补充推荐软件列表
     - 文本编辑器            : neovim(CLI), vscode(GUI)
@@ -67,13 +68,14 @@ Resolutions: 1920x1200, 3840x2160
 ## Dotfile 依赖列表
 ````
 # Hyprland 正常运行所需
-yay -S hyprland xdg-desktop-portal-hyprland polkit-kde-agent qt5-base qt5-wayland qt6-base qt6-wayland wl-clipboard playerctl kitty network-manager-applet light
+yay -S python rustup hyprland xdg-desktop-portal-hyprland polkit-kde-agent qt5-base qt5-wayland qt6-base qt6-wayland wl-clipboard playerctl kitty network-manager-applet light firefox-developer-edition swaylock swayidle swaylock-effects-git grim slurp rofi
+
 
 # 建议的必要程序
-yay -S xdg-desktop-portal waybar-hyprland cliphist wl-clip-persist-git
+yay -S xdg-desktop-portal waybar-hyprland cliphist wl-clip-persist-git neovim code code-features code-marketplace ranger thunar swappy
 
 # 建议的可选程序
-yay -S xdg-user-dirs cava btop g4music music-you go-musicfox 
+yay -S xdg-user-dirs cava btop g4music music-you go-musicfox vimiv tlp mpv scpcrcpy-appimage localsend-bin wlsunset 
 
 # 字体
 ````
