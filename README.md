@@ -46,8 +46,9 @@ Resolutions: 1920x1200, 3840x2160
     - 终端                  : kitty
     - 锁屏                  : swaylock, swayidle (DPMS support), swaylock-effects-git
     - 剪切板                : cliphist , wl-clip-persist-git, wl-clipboard
-    - 截屏                  : grim, slurp, swappy
+    - 截屏                  : grim, slurp, swappy, imv
     - 应用启动器            : rofi
+    - json 解释             : jq
 
 # 可选的补充推荐软件列表
     - 文本编辑器            : neovim(CLI), vscode(GUI)
@@ -107,6 +108,18 @@ bind = SUPER, V, exec, cliphist list | rofi -dmenu -theme "$HOME/.config/rofi/la
 exec-once = wl-paste --type text --watch cliphist store   #Stores only text data
 exec-once = wl-paste --type image --watch cliphist store  #Stores only image data
 exec-once = wl-clip-persist --clipboard both              # Use Regular and Primary clipboard,long :w
+````
+
+## Screenshots (截屏)
+- Flameshot 在 hyprland 下无法正常使用，且也没其他截屏软件可代替的情况下，由于"grim+slurp"无法暂停屏幕截屏，即采用以下曲线救国的方案。(感谢群友"[maya](https://mayapony.site/)"以及其他群佬提供方案)
+基于这个想法目前已经可以截取当前活动窗口的截图
+````
+bind = $MAIN_MOD   $CTRL_MOD, 1,   exec,                             notify-send "选区截图发送至剪切板" && grim -g "$(slurp)" - | wl-copy     # ## 选区截图发送至剪切板
+bind = $MAIN_MOD   $CTRL_MOD, 2,   exec, [noanim]                    notify-send "选区截图" && grim -g "$(slurp)" - | swappy -f -         # ## 选区截图
+bind = $MAIN_MOD   $CTRL_MOD, 3,   exec, [float;noanim;toggleopaque] notify-send "截取当前活动窗口发送至剪切板" && grim -g "$(hyprctl activewindow -j | jq '.at[0], $a, .at[1], $b, .size[0], $c, .size[1]' -j --arg a ',' --arg b ' ' --arg c 'x')" - | wl-copy # ## 截取当前显示器全屏并拷贝至剪切板
+bind = $MAIN_MOD   $CTRL_MOD, 4,   exec, [float;noanim;toggleopaque] notify-send "截取当前显示器全屏并拷贝至剪切板" && grim -o "$(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r)" - | wl-copy                                        # ## 截取当前显示器全屏并拷贝至剪切板
+bind = $MAIN_MOD   $CTRL_MOD, 5,   exec, [float;noanim;toggleopaque] notify-send "暂停截屏" && grim -o $(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r) - | imv -f - & grim -g "$(slurp)" - | swappy -f - && killall imv-wayland   # ## 暂停屏幕（伪）截屏
+
 ````
 
 
