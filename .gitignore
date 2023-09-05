@@ -27,6 +27,7 @@ Config/xfce4
 Config/user-dirs.dirs
 Config/user-dirs.locale
 Config/ranger/plugins/zoxide
+Config/ranger/plugins/ranger_devicons
 
 # Home
 Home/.gitconfig

@@ -1,3 +1,6 @@
 [submodule "Config/ranger/plugins/zoxide"]
 	path = Config/ranger/plugins/zoxide
 	url = https://github.com/jchook/ranger-zoxide.git
+[submodule "Config/ranger/plugins/ranger_devicons"]
+	path = Config/ranger/plugins/ranger_devicons
+	url = https://github.com/alexanderjeurissen/ranger_devicons.git
