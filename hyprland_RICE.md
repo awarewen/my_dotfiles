@@ -5,7 +5,7 @@
 ## 依赖软件列表
 - waybar-hyprland-git waybar-mpris-git starship fish (剔出)
 ```
-paru -S hyprland-git  cava  python rustup kitty wofi xdg-desktop-portal-hyprland-git tty-clock-git swaylockd swaylock-effects-git swayidle grim slurp swappy jq dunst wl-clipboard cliphist wl-clip-persist swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light g4music btop
+paru -S hyprland-git  cava  python rustup kitty wofi xdg-desktop-portal-hyprland-git xdg-desktop-portal-gtk tty-clock-git swaylockd swaylock-effects-git swayidle grim slurp swappy jq dunst wl-clipboard cliphist wl-clip-persist swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light g4music btop
 ```
 - 重写 hyprland 配置
 hyprctl clients : list of windows message
@@ -161,20 +161,22 @@ sudo make install
 sudo make uninstall
 ````
 
-## Clipboard setting
-- wl-clipboard: 提供 wayland 剪贴板支持
-    - exec-once
-        `exec-once = wl-paste --type text --watch cliphist store   #Stores only text data`
-        `exec-once = wl-paste --type image --watch cliphist store  #Stores only image data`
+## Clipboard setting (剪切板配置)
+- `wl-clipboard`: 提供 wayland 剪贴板支持
 
-- cliphist: 支持文本和图片的剪贴板包装应用
-- - clipboard store show whith wofi
-    - keybind
-        `bind = SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy`
+- `cliphist`: 支持文本和图片的剪贴板包装应用
+  - clipboard store show whith wofi
 
 - wl-clip-persist: 长时间保存剪贴板数据
-    - exec-once
-        `exec-once = wl-clip-persist --clipboard both              # Use Regular and Primary clipboard,long :w`
+````
+# ~/.config/hypr/hyprland/keybind.conf
+bind = SUPER, V, exec, cliphist list | rofi -dmenu -theme "$HOME/.config/rofi/launchers/type-2/style-1" | cliphist decode | wl-copy
+
+# ~/.config/hypr/hyprland/exec-once.conf
+exec-once = wl-paste --type text --watch cliphist store   #Stores only text data
+exec-once = wl-paste --type image --watch cliphist store  #Stores only image data
+exec-once = wl-clip-persist --clipboard both              # Use Regular and Primary clipboard,long :w
+````
 
 ## Screenshot
 - grim: Grab images from a Wayland compositor.

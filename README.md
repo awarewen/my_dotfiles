@@ -119,11 +119,18 @@ bind = $MAIN_MOD   $CTRL_MOD, 2,   exec, [noanim]                    notify-send
 bind = $MAIN_MOD   $CTRL_MOD, 3,   exec, [float;noanim;toggleopaque] notify-send "截取当前活动窗口发送至剪切板" && grim -g "$(hyprctl activewindow -j | jq '.at[0], $a, .at[1], $b, .size[0], $c, .size[1]' -j --arg a ',' --arg b ' ' --arg c 'x')" - | wl-copy # ## 截取当前显示器全屏并拷贝至剪切板
 bind = $MAIN_MOD   $CTRL_MOD, 4,   exec, [float;noanim;toggleopaque] notify-send "截取当前显示器全屏并拷贝至剪切板" && grim -o "$(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r)" - | wl-copy                                        # ## 截取当前显示器全屏并拷贝至剪切板
 bind = $MAIN_MOD   $CTRL_MOD, 5,   exec, [float;noanim;toggleopaque] notify-send "暂停截屏" && grim -o $(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r) - | imv -f - & grim -g "$(slurp)" - | swappy -f - && killall imv-wayland   # ## 暂停屏幕（伪）截屏
-
 ````
+
+## EWW (支持tray)
+- install: `yay -S eww-tray-wayland-git` , Arch Yes!
 
 
 ## 重要
 还有很多东西没有补充完整，每天有空就会完善。
 
-在此感谢所有开源项目的作者，如果没有他们这个世界将充满黑暗!
+## 感谢，本配置参考以下 RICE，它们都各具特点
+
+- [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland/tree/m3ww) ：作者很多实现的配置十分符合我的口味，我本来打算自己做现在可以偷懒了 ：）
+- [flick0/dotfiles](https://github.com/flick0/dotfiles) :我的配置是从此开始的，尽管现在我的配置已经面目全非了 ：）
+
+再次感谢!
