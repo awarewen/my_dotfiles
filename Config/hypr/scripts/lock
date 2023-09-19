@@ -26,4 +26,4 @@
               --daemonize
 ## Dpms ctl ( 2 s )
 swayidle -w \
-  timeout 2 'if pgrep -x swaylock; then hyprctl dispatch dpms off; else killall swayidle; fi'
+  timeout 10 'if pgrep -x swaylock; then hyprctl dispatch dpms off; else killall swayidle; fi'
