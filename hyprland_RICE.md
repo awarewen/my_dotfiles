@@ -5,7 +5,7 @@
 ## 依赖软件列表
 - waybar-hyprland-git waybar-mpris-git starship fish (剔出)
 ```
-paru -S hyprland-git  cava  python rustup kitty wofi xdg-desktop-portal-hyprland-git xdg-desktop-portal-gtk tty-clock-git swaylockd swaylock-effects-git swayidle grim slurp swappy jq dunst wl-clipboard cliphist wl-clip-persist swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light g4music btop
+paru -S hyprland-git  cava  python rustup kitty wofi xdg-desktop-portal-hyprland-git tty-clock-git swaylockd swaylock-effects-git swayidle grim slurp swappy jq dunst wl-clipboard cliphist wl-clip-persist swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light g4music btop
 ```
 - 重写 hyprland 配置
 hyprctl clients : list of windows message
@@ -55,8 +55,9 @@ device:gxtp7380:00-27c6:0113 { ## touch screen
 ````
 
 ###[lisgd](https://git.sr.ht/~mil/lisgd)
+[Using Lisgd And I3 On A Convertible Laptop --- 在可转换笔记本电脑上使用Lisgd和i3](https://www.laubersheimer.eu/2021/08/08/using-lisgd-and-i3-on-a-convertible-laptop.html)
 
-- 有一个问题：触控没有旋转过来
+- 有一个问题：触控没有旋转过来 [done]
 
 -- lisgd -d /dev/input/event13 -g "1,RL,*,*,R,notify-send next worksapce && hyprctl dispatch movetoworkspace +1 " 右往左滑动下一个工作区
 
@@ -113,9 +114,7 @@ Lisgd（libinput 合成手势守护进程）允许您基于 libinput 触摸事�
 ···
 
 - 找到对应event
-
-
-
+创建 `/etc/udev/rules.d/99-lisgd-device.rules` - `ENV{ID_INPUT_TOUCHSCREEN}=="1", MODE:="0666" GROUP="USERNAME", SYMLINK+="input/touchscreen"` [未测试]
 
 ### 锁屏禁止触屏,仅通过键盘按键点亮屏幕
  ````
@@ -161,22 +160,20 @@ sudo make install
 sudo make uninstall
 ````
 
-## Clipboard setting (剪切板配置)
-- `wl-clipboard`: 提供 wayland 剪贴板支持
+## Clipboard setting
+- wl-clipboard: 提供 wayland 剪贴板支持
+    - exec-once
+        `exec-once = wl-paste --type text --watch cliphist store   #Stores only text data`
+        `exec-once = wl-paste --type image --watch cliphist store  #Stores only image data`
 
-- `cliphist`: 支持文本和图片的剪贴板包装应用
-  - clipboard store show whith wofi
+- cliphist: 支持文本和图片的剪贴板包装应用
+- - clipboard store show whith wofi
+    - keybind
+        `bind = SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy`
 
 - wl-clip-persist: 长时间保存剪贴板数据
-````
-# ~/.config/hypr/hyprland/keybind.conf
-bind = SUPER, V, exec, cliphist list | rofi -dmenu -theme "$HOME/.config/rofi/launchers/type-2/style-1" | cliphist decode | wl-copy
-
-# ~/.config/hypr/hyprland/exec-once.conf
-exec-once = wl-paste --type text --watch cliphist store   #Stores only text data
-exec-once = wl-paste --type image --watch cliphist store  #Stores only image data
-exec-once = wl-clip-persist --clipboard both              # Use Regular and Primary clipboard,long :w
-````
+    - exec-once
+        `exec-once = wl-clip-persist --clipboard both              # Use Regular and Primary clipboard,long :w`
 
 ## Screenshot
 - grim: Grab images from a Wayland compositor.
@@ -463,3 +460,113 @@ swww 更换壁纸方案2
 ````
 wlsunset -l 39.9 -L 116.3
 ````
+
+
+## 参考配置列表 | 解析配置
+
+### [end-4/dots-hyprland at m3ww --- END-4/DOTS-Hyprland at M3WW](https://github.com/end-4/dots-hyprland/tree/m3ww)
+1. 依赖列表
+````
+- python
+    * python-pywal              : 🎨 即时生成和更改配色方案。
+    * python-desktop-entry-lib  : 用于处理 .desktop 文件的 Python 库
+    * python-poetry             : Python 打包,构建,依赖关系管理等等
+    * python-build              : 一个简单、正确的 Python 构建前端
+    * python-pillow             : 为 Python 解释器添加了图像处理功能。
+
+
+eww-tray-wayland-git: 支持 tray 的eww   [waybar-hyprland-git] [需要添加layer层配置让eww panal 正常工作]
+bc                  : BC 是一种任意精度的数字处理语言
+[ blueberry-wayland ](https://github.com/linuxmint/blueberry):一个在 GNOME 之外使用 gnome-蓝牙的包装器gui应用程序。[替换 blueman]
+bluez               : 蓝牙的daemons
+bluez-utils         : 蓝牙控制工具
+boost               : Boost 提供免费的同行评审便携式C++源库。
+boost-libs          : Boost libs
+coreutils           : GNU 核心实用程序是 GNU 操作系统的基本文件、外壳和文本操作实用程序。
+curl                : 下载工具
+findutils           : GNU 查找实用程序是 GNU 操作系统的基本目录搜索实用程序。
+fish                : fish shell [only zsh]
+fuzzel              : 基于wlroots的Wayland合成器的应用程序启动器，类似于rofi的“drun”模式。[rofi wofi] [passwd 补全]
+fzf                 : fzf
+gawk                : gun 版本awk, awk 实用程序解释一种特殊用途的编程语言，只需几行代码即可处理简单的数据重新格式化作业。
+gnome-control-center: GNOME的主界面，用于配置桌面的各个方面。
+ibus                : 输入法 [fcitx5]
+imagemagick         : 图片处理
+libqalculate        : 是一个多用途的跨平台桌面计算器。
+light               : 亮度控制
+networkmanager
+network-manager-applet
+nlohmann-json       : 适用于现代C++的 JSON库
+pavucontrol         : 音量控制界面          [替换 pavucontrol-qt]
+plasma-browser-integration  : plasma 浏览器集成 需要浏览器插件
+playerctl           : 播放器控制
+procps              : 用于浏览 procfs 的命令行和全屏实用程序，
+ripgrep             : ripgrep 是一个面向行的搜索工具，它递归地搜索当前目录以查找正则表达式模式。
+socat               : SOCAT是用于在两个独立数据通道之间进行双向数据传输的中继。这些数据通道中的每一个都可以是文件，管道，设备（串行线路等或伪终端），套接字（UNIX，IP4，IP6 - 原始，UDP，TCP），SSL套接字，代理CONNECT连接，文件描述符（stdin等），GNU行编辑器（readline），程序或其中两个的组合。这些模式包括生成“侦听”套接字、命名管道和伪终端。
+sox                 : SoX 是一种命令行音频处理工具，特别适合进行快速、简单的编辑和批处理。
+starship            : shell
+udev
+upower
+util-linux          : util-linux 是由 Linux 内核组织分发的标准软件包，用作 Linux 操作系统的一部分。
+xorg-rander         : xorg-rander
+wget                : 下载工具
+wireplumber         : pipewire 前端
+yad                 : 程序允许您从命令行或 shell 脚本显示 GTK+ 对话框。 [xwayland]
+wl-recorder         : 原始的录屏程序
+
+# AUR
+cava                : 音频可视化
+lexend-fonts-git    : font
+geticons            : icon获取，一个 cli 实用程序，用于按名称获取系统上应用程序的图标或其他通用图标。
+gojq                : jq 的全go实现 [jq]
+gtklock             : lock screen
+gtklock-playerctl-module : 锁屏页面显示信息
+gtklock-powerbar-module  : module
+gtklock-userinfo-module  : module
+hyprland-git             : hyprland
+python-material-color-utilities : 用于材质颜色的材质-颜色-实用程序的 Python 端口
+swww                     : 壁纸
+ttf-material-symbols-git : symbol-fonts
+wlogout                  : logout面板
+showmethekey             : 按键显示
+
+
+# other
+yazi                    : cli file manager [ranger] [custom config copy]
+````
+
+
+## BUG state
+ eww中脚本引起的重复进程
+
+ - eww 面板中的todo list delete 报错缺失 `libboost_iostreams.so.1.81.0`
+ 在安装 boost boost-libs 之后将 `libboost_iostreams.so.1.83.0` 软连接到 `libboost_iostreams.so.1.81.0`
+
+ - 系统信息显示报错
+
+ - 歌曲切换报错 stderr of `volume`: Invalid non-ASCII
+
+ - 配置中的 ERROR
+
+## todo list
+- 修复todo list面板添加  []
+- 修复音频和屏幕亮度面板 [done]
+- 更改dunst通知          []
+- 启动器替换rofi wofi fuzzel []
+
+
+## clean configura
+- dashboard : 只能找到 toggle-dashboard.sh 并存在对应的keybind，但是实际上eww并没有这个窗口
+
+
+## 模拟右键点击 [未测试]
+[PeterCxy/scroll-emulation: Middle button scrolling emulation for Wayland (tested on GNOME Wayland) --- PeterCxy/scroll-emulation：用于Wayland的中间按钮滚动仿真（在GNOME Wayland上测试）](https://github.com/PeterCxy/scroll-emulation)
+
+[GPD Pocket - ArchWiki --- GPD 口袋 - 建筑维基](https://wiki.archlinux.org/title/GPD_Pocket#Wayland)
+
+与Xorg不同，在Xorg下，右键仿真可以通过标准的Xorg配置文件启用，在Wayland下，这样的配置应该由合成器公开，不幸的是，一些合成器（例如GNOME Wayland）没有正确公开这些配置。但是，相关功能在 中 libinput 仍然可用。由于这些合成器通常加载 /etc/profile.d ， LD_PRELOAD 因此可以用来钩接到 libinput 并强制应用这些配置。
+
+## 多点触控 [X11]
+[JoseExposito/touchegg: Linux multi-touch gesture recognizer --- JoseExposito/touchegg：Linux 多点触控手势识别器](https://github.com/JoseExposito/touchegg)
+[JoseExposito/touche: The desktop application to configure Touchégg --- JoseExposito/touche：用于配置 Touchégg 的桌面应用程序](https://github.com/JoseExposito/touche)
+[MarioJim/touchegg-music-client: Widget for music and volume control, connected to touchegg's daemon](https://github.com/MarioJim/touchegg-music-client)
