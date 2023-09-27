@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 if [[ $# -lt 1 ]] || [[ ! -d $1 ]]; then
 	notify-send "Usage:
 	$0 <dir containg images>"
@@ -10,7 +10,6 @@ find "$1" \
     echo "$((RANDOM % 1000)):$img"
     done | sort -n | cut -d':' -f2- | tail -n 1 \
 | while read -r img; do
-	  notify-send "$img"
     COR=$(printf "%02x" $(($RANDOM % 156 + 100)))
     COG=$(printf "%02x" $(($RANDOM % 156 + 100)))
     COB=$(printf "%02x" $(($RANDOM % 156 + 100)))
@@ -21,4 +20,6 @@ find "$1" \
                   --transition-bezier .1,1,.1,.4 \
                   --transition-type any \
                   --transition-duration 4
+	  notify-send "壁纸切换" "$img" -u normal -i "$img" -t 5000 # 通知处理
 done
+

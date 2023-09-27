@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # This script will randomly go through the files of a directory, setting it
 # up as the wallpaper at regular intervals

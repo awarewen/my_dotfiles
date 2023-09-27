@@ -413,8 +413,9 @@ bind = SUPER_ALT, w, togglefloating, window
 -- ScreenSort
     -- flameshot :  Working bad on wayland, No supper multi-monitor display
     -- kooha : 支持wayland的录屏工具
-    -- OBS
+    -- obs-studio-tytan652: 冲突 libva-vdpau-driver(vdpau 硬件加速){2023-9-23:libmbedcrypto.so.7 缺失 安装mbedtls2 补全依赖}
     -- grimblast: 
+    -- wl-recorder :  原始的录屏程序
 
 -- tailscale-git
 
@@ -548,11 +549,6 @@ yazi                    : cli file manager [ranger] [custom config copy]
 
  - 配置中的 ERROR
 
-## todo list
-- 修复todo list面板添加  []
-- 修复音频和屏幕亮度面板 [done]
-- 更改dunst通知          []
-- 启动器替换rofi wofi fuzzel []
 
 
 ## clean configura
@@ -570,3 +566,28 @@ yazi                    : cli file manager [ranger] [custom config copy]
 [JoseExposito/touchegg: Linux multi-touch gesture recognizer --- JoseExposito/touchegg：Linux 多点触控手势识别器](https://github.com/JoseExposito/touchegg)
 [JoseExposito/touche: The desktop application to configure Touchégg --- JoseExposito/touche：用于配置 Touchégg 的桌面应用程序](https://github.com/JoseExposito/touche)
 [MarioJim/touchegg-music-client: Widget for music and volume control, connected to touchegg's daemon](https://github.com/MarioJim/touchegg-music-client)
+
+## todo list
+- 修复todo list面板添加  []
+- 修复音频和屏幕亮度面板 [done]
+- 更改dunst通知          [done]
+        https://smarttech101.com/how-to-configure-dunst-notifications-in-linux-with-images/
+        https://github.com/dunst-project/dunst
+        https://github.com/dunst-project/dunst/wiki/Guides
+- 启动器替换rofi wofi fuzzel []
+
+# Pacman 源和配置
+## Chaotic-aur
+[Chaotic-AUR - an automated building repo for AUR packages --- Chaotic-AUR - AUR 包的自动化构建存储库](https://aur.chaotic.cx/)
+2023-9-23: chaotic-aur/ftl-sdk PGP密钥报错 造成obs-studio 无法通过chaotic-aur 安装，使用 paru 单独安装aur/ftl-sdk
+
+## powerpill
+[powerpill](https://xyne.dev/projects/powerpill/) 使用aria2 和reflector 加速下载
+实际上感觉不太好用，但是未进行深入的测试
+
+## aria2 加速
+在 pacman 的 XferCommand 中使用 aria2c 不会导致多个软件包的并行下载。Pacman 一次用一个包调用 XferCommand 并等待它完成，然后再调用下一个包。若要并行下载多个程序包，请参阅 Powerpill。
+- 安装aira2后在`/etc/pacman.conf`: [options] 添加下列内容
+````
+XferCommand = /usr/bin/aria2c --allow-overwrite=true --continue=true --file-allocation=none --log-level=error --max-tries=2 --max-connection-per-server=2 --max-file-not-found=5 --min-split-size=5M --no-conf --remote-time=true --summary-interval=60 --timeout=5 --dir=/ --out %o %u
+````

@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
     swaylock  --screenshots \
               --grace-no-mouse \
@@ -24,6 +24,7 @@
               --indicator-caps-lock \
               --fade-in 0.1 \
               --daemonize
+
 ## Dpms ctl ( 2 s )
 swayidle -w \
-  timeout 10 'if pgrep -x swaylock; then hyprctl dispatch dpms off; else killall swayidle; fi'
+  timeout 2 'if pgrep -x swaylock; then hyprctl dispatch dpms off && dunstctl set-paused true; else dunstctl set-paused false && killall swayidle; fi'

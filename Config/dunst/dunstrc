@@ -1,129 +1,76 @@
 # See dunst(5) for all configuration options
 
 [global]
-    ### Display ###
-
-    # Which monitor should the notifications be displayed on.
-    monitor = 0
-
-    # Display notification on focused monitor.  Possible modes are:
-    #   mouse: follow mouse pointer
-    #   keyboard: follow window with keyboard focus
-    #   none: don't follow anything
-    #
-    # "keyboard" needs a window manager that exports the
-    # _NET_ACTIVE_WINDOW property.
-    # This should be the case for almost all modern window managers.
-    #
-    # If this option is set to mouse or keyboard, the monitor option
-    # will be ignored.
-    follow = keyboard
-
+    monitor            = 0
+    follow             = keyboard # The monitor option will be ignored [mouse, keyboard, none]
     enable_posix_regex = true
 
     ### Geometry ###
+    width  = (0, 1500)
+    height = 900
+    origin = top-center
+    offset = 30x50
+    scale  = 0            # only x11
 
-    # dynamic width from 0 to 300
-    # width = (0, 300)
-    # constant width of 300
-    width = (300, 600)
-
-    # The maximum height of a single notification, excluding the frame.
-    height = (200, 600)
-
-    # Position the notification in the top right corner
-    origin = top-left
-
-    # Offset from the origin
-    offset = 30x30
-
-    # Scale factor. It is auto-detected if value is 0.
-    scale = 0
-
-    # Maximum number of notification (0 means no limit)
     notification_limit = 20
+
+    icon_corner_radius = 10   # 显示 icon 时添加圆角
 
     ### Progress bar ###
 
     # Turn on the progess bar. It appears when a progress hint is passed with
     # for example dunstify -h int:value:12
-    progress_bar = true
+    progress_bar               = true
+    progress_bar_height        = 10
+    progress_bar_frame_width   = 1
+    progress_bar_min_width     = 150
+    progress_bar_max_width     = 300
+    progress_bar_corner_radius = 0
 
-    # Set the progress bar height. This includes the frame, so make sure
-    # it's at least twice as big as the frame width.
-    progress_bar_height = 10
-
-    # Set the frame width of the progress bar
-    progress_bar_frame_width = 1
-
-    # Set the minimum width for the progress bar
-    progress_bar_min_width = 150
-
-    # Set the maximum width for the progress bar
-    progress_bar_max_width = 300
 
 
     # Show how many messages are currently hidden (because of
     # notification_limit).
-    indicate_hidden = yes
+    indicate_hidden = yes # 显示相同通知数量
 
-    # The transparency of the window.  Range: [0; 100].
-    # This option will only work if a compositing window manager is
-    # present (e.g. xcompmgr, compiz, etc.). (X11 only)
-    transparency = 0
+    transparency = 0  # 透明度
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
     # Set to 0 to disable.
     # If gap_size is greater than 0, this setting will be ignored.
-    separator_height = 2
+    separator_height = 2  # 通知之间分隔符的高度（以像素为单位），如果设置为 0，则通知之间将没有分隔线。如果gap_size大于 0，将忽略此设置。
 
-    # Padding between text and separator.
-    padding = 8
+# 
+    padding = 8           # 从内容到垂直轴上窗口的分隔符/边框的距离（以像素为单位）
+    horizontal_padding = 8 # 从内容到水平轴上窗口边框的距离（以像素为单位）
+    text_icon_padding = 5 # 水平轴上从文本到图标的距离（反之亦然）。将此值设置为非零值将覆盖horizontal_padding在通知文本和图标之间添加的任何填充。
 
-    # Horizontal padding.
-    horizontal_padding = 8
+    frame_width = 3 # 定义通知窗口周围帧的宽度（以像素为单位）。设置为 0 表示禁用。
 
-    # Padding between text and icon.
-    text_icon_padding = 0
-
-    # Defines width in pixels of frame around the notification window.
-    # Set to 0 to disable.
-    frame_width = 3
-
-    # Defines color of the frame around the notification window.
     frame_color = "#c0caf5"
 
-    # Size of gap to display between notifications - requires a compositor.
-    # If value is greater than 0, separator_height will be ignored and a border
-    # of size frame_width will be drawn around each notification instead.
-    # Click events on gaps do not currently propagate to applications below.
-    gap_size = 5
+    gap_size = 5 # 通知之间显示的间隔大小。
+# 如果值大于 0，则将忽略separator_height，而是在每个通知周围绘制大小为 frame_width 的边框。
+# 此设置需要合成器，并且间隙之间显示的任何应用程序当前都不可单击。
 
-    # Define a color for the separator.
-    # possible values are:
-    #  * auto: dunst tries to find a color fitting to the background;
-    #  * foreground: use the same color as the foreground;
-    #  * frame: use the same color as the frame;
-    #  * anything else will be interpreted as a X color.
-    separator_color = frame
+    separator_color = frame # 值：[自动/前景/帧/#RRGGBB] 默认值：帧, 设置两个通知之间的分隔线的颜色 [auto, foreground, frame, anything]
 
-    # Sort messages by urgency.
-    sort = yes
+    sort = yes # 排序，    如果设置为 true，则显示比其他通知更高的紧急程度。
 
-    # Don't remove messages, if the user is idle (no mouse or keyboard input)
-    # for longer than idle_threshold seconds.
-    # Set to 0 to disable.
-    # A client can set the 'transient' hint to bypass this. See the rules
-    # section for how to disable this if necessary
     # idle_threshold = 120
+# 如果用户空闲时间超过此时间，请不要超时通知。有关有效时间，请参阅时间格式。
+# 设置为 0 表示禁用。
+    # 客户端可以将通知标记为暂时性，以绕过此设置并超时。使用带有“set_transient = 否”的规则来禁用此行为。
+
+    ### Wayland ###
+    layer = overlay # 通知所在图层（仅限wayland）, [bottom, top, overlay]
+    force_xwayland = false # (仅限wayland)
 
     ### Text ###
 
-    font = Sofia Pro 16
+    font = HYLeMiaoTiJ 16
 
-    # The spacing between lines.  If the height is smaller than the
-    # font height, it will get raised to the font height.
     line_height = 0
 
     # Possible values are:
@@ -204,11 +151,11 @@
     max_icon_size = 64
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/hicolor/128x128/status/:/usr/share/icons/hicolor/128x128/devices/:/usr/share/icons/hicolor/128x128/apps/
-    icon_theme = "Papirus, Adwaita"
+    #icon_path = /usr/share/icons/hicolor/128x128/status/:/usr/share/icons/hicolor/128x128/devices/:/usr/share/icons/hicolor/128x128/apps/
+    #icon_theme = "Papirus, Adwaita"
     enable_recursive_icon_lookup = true
 
-    always_run_scripts = true
+    #always_run_scripts = true
     ### History ###
 
     # Should a notification popped up from history be sticky or timeout
@@ -248,26 +195,8 @@
     # user defined timeout.
     ignore_dbusclose = false
 
-    ### Wayland ###
-    # These settings are Wayland-specific. They have no effect when using X11
-
-    # Uncomment this if you want to let notications appear under fullscreen
-    # applications (default: overlay)
-    layer = overlay
-
-    # Set this to true to use X11 output on Wayland.
-    force_xwayland = false
 
     ### Legacy
-
-    # Use the Xinerama extension instead of RandR for multi-monitor support.
-    # This setting is provided for compatibility with older nVidia drivers that
-    # do not support RandR and using it on systems that support RandR is highly
-    # discouraged.
-    #
-    # By enabling this setting dunst will not be able to detect when a monitor
-    # is connected or disconnected which might break follow mode if the screen
-    # layout changes.
     force_xinerama = false
 
     ### mouse
@@ -451,18 +380,34 @@
 #    appname = "some_volume_notifiers"
 #    set_stack_tag = "volume"
 #
-[redirect]
-summary = "*"
-script = "~/.config/hypr/scripts/tools/notif"
-
-[logger]
-summary = "*"
-script = "~/.config/hypr/scripts/tools/notif"
-
-[spotify]
-summary = "*"
-script = "~/.scripts/music-art"
+[Hyprland base icon]
+    #appname = dunstify
+    appname = "dunstify"
+    icon    = "~/Pictures/Icon_svg/黑洞，宇 宙.svg"
 
 [spotify-icon]
 appname = "Spotify"
 icon = "~/.cache/temp.png"
+
+
+## custom themes catppuccin (https://github.com/catppuccin/dunst)
+
+[global]
+frame_color = "#89B4FA"
+separator_color= frame
+# default_icon = /home/awarewen/Pictures/Icon_svg/icons_017.svg
+default_icon = /home/awarewen/Pictures/mypictures/emojis/gura_009.png
+
+[urgency_low]
+background = "#f15b6c"  ##1E1E2E
+foreground = "#CDD6F4"
+default_icon = /home/awarewen/Pictures/mypictures/emojis/gura_009.png
+
+[urgency_normal]
+background = "#1c1b1f"" # 2e3a1f
+foreground = "#f15b6c"
+
+[urgency_critical]
+background = "#f15b6c"
+foreground = "#CDD6F4"
+frame_color = "#FAB387"

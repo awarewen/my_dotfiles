@@ -1,4 +1,4 @@
-# Picture
+# Pictures
 
 <p align="center">
   <img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230821-004518.png" width=49%>
@@ -10,28 +10,33 @@
 </p>
 
 ---
-# TODO list:
-````
-    README 补全
-    dunst  通知的个性美化
-    窗口，工作区与快捷键
-    配置中的各个部分的联动部分完善
-````
 
 # 说明
-- 此配置为 [GPD Pocket 3](http://www.softwincn.com/gpdpocket3) 设备适配，其他设备可能需要对某些冗余配置进行删减或更改
-- 避免在 Dotfile 关键程序/依赖部分使用过于 "新" 的软件版本，目的在于增加桌面稳定性
+*仓库文件结构*
+    - `Config` : `$HOME/.config/` 下的配置文件
+    - `HOME` : `$HOME/` 下的文件
+    - `dotfile_state.md` : 此仓库的状态请查看 `dotfile_state.md` 文件
+    - `keybind.md` : 配置中除去某些软件中一些默认的快捷键外，所有相关的快捷键请查看 `keybind.md` 文件
+    - 
+
+- 此配置触控功能为 [GPD Pocket 3](http://www.softwincn.com/gpdpocket3) 或类似触屏便携设备适配，其他不具备触控设备可按需要对某些冗余配置进行删减或更改
+
+
+- 系统信息预览
 ````
-设备: GPD Pocket 3
+硬件设备: GPD Pocket 3
 OS  : Arch linux
+Resolutions : 1920x1200, 3840x2160
 WM  : Hyprland
-Bar : waybar hyprland
-Terminal: kitty,foot(bk)
-File-manager: thunar,ranger
-Resolutions: 1920x1200, 3840x2160
+shell : zsh
+Terminal : kitty,foot(bk)
+Bar : eww,waybar-hyprland(bk)
+File-manager : thunar,ranger
+File system : btrfs
 ````
 
-## 配置状态
+## 所有个人使用的软件和依赖程序列表
+*重要* : 建议系统关键功能请按列表安装，否则请按相应功能修复相关功能脚本
 ````
 # Dot 各个方面正常运行的基本要求列表
     - 系统资源/进程监视器   : btop
@@ -48,10 +53,10 @@ Resolutions: 1920x1200, 3840x2160
     - 剪切板                : cliphist , wl-clip-persist-git, wl-clipboard
     - 截屏                  : grim, slurp, swappy, imv
     - 应用启动器            : rofi
-    - json 解释             : jq
+    - json 解释             : jq, gojq
 
 # 可选的补充推荐软件列表
-    - 文本编辑器            : neovim(CLI), vscode(GUI)
+    - 文本编辑器            : neovim(CLI，截图中配置使用 [Evgeni Chasnovski dotfile](https://github.com/echasnovski/nvim) ), vscode(GUI)
     - 音乐播放器            : go-musicfox(CLI,网易云第三方), music-you(网易云第三方), g4music(本地GUI播放器)
     - 图片预览              : kitty(CLI,kitty +kitten ica), ranger(CLI, preview with kitty), vimiv(GUI, vim like keybind)
     - 视屏播放              : mpv(CLI,本地)
@@ -67,7 +72,7 @@ Resolutions: 1920x1200, 3840x2160
     - 触控屏幕              : lisgd(work fine with iio-hyprland，触屏 手写笔)
 ````
 
-## Dotfile 依赖列表
+## Dotfile 依赖安装
 ````
 # Hyprland 正常运行所需
 ## xdg-desktop-portal-hyprland-git, xdg-desktop-portal-gtk-git(support file picker), qt5-wayland, qt6-wayland 作为 portal support
