@@ -1,5 +1,6 @@
 # Pictures
 
+- Waybar Bar
 <p align="center">
   <img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230821-004518.png" width=49%>
   <img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230826-011849.png" width=49%>
@@ -7,6 +8,14 @@
 
 <p align="center">
 <img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230828-055313.png" width=100%>
+</p>
+---
+- Eww Bar
+<p align="center">
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230927-224915.png" width=49%>
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230929-232918.png" width=49%>
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230929-232945.png" width=49%>
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/swappy-20230929-234122.png" width=49%>
 </p>
 
 ---
