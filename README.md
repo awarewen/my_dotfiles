@@ -21,31 +21,32 @@
 ---
 
 # 说明
-*仓库文件结构*
-    - `Config` : `$HOME/.config/` 下的配置文件
-    - `HOME` : `$HOME/` 下的文件
-    - `dotfile_state.md` : 此仓库的状态请查看 `dotfile_state.md` 文件
-    - `keybind.md` : 配置中除去某些软件中一些默认的快捷键外，所有相关的快捷键请查看 `keybind.md` 文件
-    - 
-
-- 此配置触控功能为 [GPD Pocket 3](http://www.softwincn.com/gpdpocket3) 或类似触屏便携设备适配，其他不具备触控设备可按需要对某些冗余配置进行删减或更改
-
-
-- 系统信息预览
+**仓库文件结构**
 ````
-硬件设备: GPD Pocket 3
-OS  : Arch linux
-Resolutions : 1920x1200, 3840x2160
-WM  : Hyprland
-shell : zsh
-Terminal : kitty,foot(bk)
-Bar : eww,waybar-hyprland(bk)
+    - `Config`           : `$HOME/.config/` 下的配置文件
+    - `HOME`             : `$HOME/` 下的文件
+    - `dotfile_state.md` : 此仓库的状态请查看 `dotfile_state.md` 文件
+    - `keybind.md`       : 配置中除去某些软件中一些默认的快捷键外，所有相关的快捷键请查看 `keybind.md` 文件
+````
+
+> **重要**  此配置触控功能为 [GPD Pocket 3](http://www.softwincn.com/gpdpocket3) 或类似触屏便携设备适配，其他不具备触控设备可按需要对某些冗余配置进行删减或更改
+
+
+## 系统信息预览
+````
+硬件设备     : GPD Pocket 3
+OS           : Arch linux
+Resolutions  : 1920x1200, 3840x2160
+WM           : Hyprland
+shell        : zsh
+Terminal     : kitty,foot(bk)
+Bar          : eww,waybar-hyprland(bk)
 File-manager : thunar,ranger
-File system : btrfs
+File system  : btrfs
 ````
 
 ## 所有个人使用的软件和依赖程序列表
-*重要* : 建议系统关键功能请按列表安装，否则请按相应功能修复相关功能脚本
+> **重要** : 建议系统关键功能请按列表安装，否则请按相应功能修复相关功能脚本
 ````
 # Dot 各个方面正常运行的基本要求列表
     - 系统资源/进程监视器   : btop
@@ -125,7 +126,7 @@ exec-once = wl-clip-persist --clipboard both              # Use Regular and Prim
 ````
 
 ## Screenshots (截屏)
-- Flameshot 在 hyprland 下无法正常使用，且也没其他截屏软件可代替的情况下，由于"grim+slurp"无法暂停屏幕截屏，即采用以下曲线救国的方案。(感谢群友"[maya](https://mayapony.site/)"以及其他群佬提供方案)
+- ~Flameshot 在 hyprland 下无法正常使用~，且也没其他截屏软件可代替的情况下，由于"grim+slurp"无法暂停屏幕截屏，即采用以下曲线救国的方案。(感谢群友"[maya](https://mayapony.site/)"以及其他群佬提供方案)
 基于这个想法目前已经可以截取当前活动窗口的截图
 ````
 bind = $MAIN_MOD   $CTRL_MOD, 1,   exec,                             notify-send "选区截图发送至剪切板" && grim -g "$(slurp)" - | wl-copy     # ## 选区截图发送至剪切板
@@ -137,10 +138,6 @@ bind = $MAIN_MOD   $CTRL_MOD, 5,   exec, [float;noanim;toggleopaque] notify-send
 
 ## EWW (支持tray)
 - install: `yay -S eww-tray-wayland-git` , Arch Yes!
-
-
-## 重要
-还有很多东西没有补充完整，每天有空就会完善。
 
 ## 感谢，本配置参考以下 RICE，它们都各具特点
 
