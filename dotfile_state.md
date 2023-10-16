@@ -9,6 +9,13 @@
 
 # Latest
 
+## 2023/10/17
+1. 添加一份 firefox 的 UI css 配置，仅仅将 firefox tools 的 icons 默认显示更改为一个实心圆点，让界面更加干净，将鼠标移到对应 icon 自动显示
+2. hyprland v 0.31.0 更新 https://github.com/hyprwm/Hyprland/releases/tag/v0.31.0
+- 调度程序：修复捕捉浮动时额外的显示器偏移 （ #3520）
+- 允许 `hyprctl keyword workspace name:wspers,persistent:true` 将工作区标记持久化, 更加个性化的工作区空间 https://github.com/hyprwm/Hyprland/pull/3530
+- changegroupactive 支持索引 1 开始 0 最后一个
+
 ## 2023/9/29
 
 上传了几张新截图，中秋节快乐！ :)

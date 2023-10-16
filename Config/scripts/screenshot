@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+grim -g "$(slurp)" - | wl-copy
+
+notify-send "选区截图发送至剪切板" && grim -g "$(slurp)" - | wl-copy     # ## 选区截图发送至剪切板
+notify-send "选区截图" && grim -g "$(slurp)" - | swappy -f -         # ## 选区截图
+notify-send "截取当前活动窗口发送至剪切板" && grim -g "$(hyprctl activewindow -j | jq '.at[0], $a, .at[1], $b, .size[0], $c, .size[1]' -j --arg a ',' --arg b ' ' --arg c 'x')" - | wl-copy # ## 截取当前显示器全屏并拷贝至剪切板
+notify-send "截取当前显示器全屏并拷贝至剪切板" && grim -o "$(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r)" - | wl-copy                                        # ## 截取当前显示器全屏并拷贝至剪切板
+notify-send "暂停截屏" && grim -o $(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r) - | imv -f - & grim -g "$(slurp)" - | swappy -f - && killall imv-wayland   # ## 暂停屏幕（伪）截屏
