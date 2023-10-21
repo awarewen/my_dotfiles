@@ -51,10 +51,10 @@ File system  : btrfs
 # Dot 各个方面正常运行的基本要求列表
     - 系统资源/进程监视器   : btop
     - 音频可视化            : cava
-    - Audio                 : pipewire
+    - Audio                 : pipewire, playerctl
     - 屏幕亮度              : light
     - 通知                  : dunst
-    - 系统信息显示          : fastfetch (待更新至 config.jsonc 配置格式)
+    - 系统信息显示          : fastfetch (待更新至 config.jsonc 配置格式) , guifetch (https://github.com/FlafyDev/guifetch?ref=flutterawesome.com)
     - Bar                   : waybar-hyprland-git (待考虑 EWW)
     - 浏览器                : firefox-developer-edition
     - 文件管理器            : thunar(GUI),ranger(CLI)
@@ -74,6 +74,8 @@ File system  : btrfs
     - 局域网文件分享        : localsend-bin
     - GAMA 屏幕伽马值       : wlsunset
     - 串口连接              : tinyserial(提供com命令)
+    - 流程图                : drawio
+    - 图片管理              : xnviewmp
 
 # 笔记本上可用的软件 (适配于GPD pocket 3)
     - 电源管理              : tlp
@@ -129,15 +131,18 @@ exec-once = wl-clip-persist --clipboard both              # Use Regular and Prim
 - ~Flameshot 在 hyprland 下无法正常使用~，且也没其他截屏软件可代替的情况下，由于"grim+slurp"无法暂停屏幕截屏，即采用以下曲线救国的方案。(感谢群友"[maya](https://mayapony.site/)"以及其他群佬提供方案)
 基于这个想法目前已经可以截取当前活动窗口的截图
 ````
-bind = $MAIN_MOD   $CTRL_MOD, 1,   exec,                             notify-send "选区截图发送至剪切板" && grim -g "$(slurp)" - | wl-copy     # ## 选区截图发送至剪切板
-bind = $MAIN_MOD   $CTRL_MOD, 2,   exec, [noanim]                    notify-send "选区截图" && grim -g "$(slurp)" - | swappy -f -         # ## 选区截图
-bind = $MAIN_MOD   $CTRL_MOD, 3,   exec, [float;noanim;toggleopaque] notify-send "截取当前活动窗口发送至剪切板" && grim -g "$(hyprctl activewindow -j | jq '.at[0], $a, .at[1], $b, .size[0], $c, .size[1]' -j --arg a ',' --arg b ' ' --arg c 'x')" - | wl-copy # ## 截取当前显示器全屏并拷贝至剪切板
-bind = $MAIN_MOD   $CTRL_MOD, 4,   exec, [float;noanim;toggleopaque] notify-send "截取当前显示器全屏并拷贝至剪切板" && grim -o "$(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r)" - | wl-copy                                        # ## 截取当前显示器全屏并拷贝至剪切板
-bind = $MAIN_MOD   $CTRL_MOD, 5,   exec, [float;noanim;toggleopaque] notify-send "暂停截屏" && grim -o $(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r) - | imv -f - & grim -g "$(slurp)" - | swappy -f - && killall imv-wayland   # ## 暂停屏幕（伪）截屏
+bind = $MAIN_MOD   $CTRL_MOD, 1,   exec,                             grim -g "$(slurp -d)" - | wl-copy && notify-send "选区截图发送至剪切板"    # ## 选区截图发送至剪切板
+bind = $MAIN_MOD   $CTRL_MOD, 2,   exec, [noanim]                    grim -g "$(slurp -d)" - | swappy -f - && notify-send "选区截图"            # ## 选区截图
+bind = $MAIN_MOD   $CTRL_MOD, 3,   exec, [float;noanim;toggleopaque] grim -g "$(hyprctl activewindow -j | gojq '.at[0], $a, .at[1], $b, .size[0], $c, .size[1]' -j --arg a ',' --arg b ' ' --arg c 'x')" - | wl-copy && notify-send "截取当前活动窗口发送至剪切板"  # ## 截取当前显示器全屏并拷贝至剪切板
+bind = $MAIN_MOD   $CTRL_MOD, 4,   exec, [float;noanim;toggleopaque] grim -o "$(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r)" - | wl-copy && notify-send "截取当前显示器全屏并拷贝至剪切板"                                              # ## 截取当前显示器全屏并拷贝至剪切板
+bind = $MAIN_MOD   $CTRL_MOD, 5,   exec, [float;noanim;toggleopaque] grim -o "$(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r)" - | imv -f - & grim -g "$(slurp -d && killall imv-wayland)" - | swappy -f - && notify-send "暂停截屏"           # ## 暂停屏幕（伪）截屏
 ````
 
 ## EWW (支持tray)
 - install: `yay -S eww-tray-wayland-git` , Arch Yes!
+
+## 2023/10/21 修复
+目前先将 end-4/dots-hyprland 中所有功能恢复正常工作，再开始修改以及添加新功能
 
 ## 感谢，本配置参考以下 RICE，它们都各具特点
 
