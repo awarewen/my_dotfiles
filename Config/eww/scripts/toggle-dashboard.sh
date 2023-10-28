@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-state=$(eww -c ~/.config/eww get open_dashboard)
+state=$(eww get open_dashboard)
 
 if [[ "$state" -gt "0" || "$1" == "--close" ]]; then
     eww close dashboard

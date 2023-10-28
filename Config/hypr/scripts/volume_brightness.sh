@@ -149,6 +149,7 @@ case $1 in
     show_brightness_notif
     ;;
 
+    # palyerctl not working with musi-you now [2023/10/21]
     next_track)
     # Skips to the next song and displays the notification
     playerctl next

@@ -1,5 +1,5 @@
 {
-    "wallpaper": "/home/awarewen/Picture/wallpaper",
+    "wallpaper": "/home/end/.config/eww/images/wallpaper",
     "alpha": "100",
 
     "special": {

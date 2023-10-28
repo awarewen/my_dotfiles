@@ -76,6 +76,7 @@ File system  : btrfs
     - 串口连接              : tinyserial(提供com命令)
     - 流程图                : drawio
     - 图片管理              : xnviewmp
+    - logout                : wlogout
 
 # 笔记本上可用的软件 (适配于GPD pocket 3)
     - 电源管理              : tlp

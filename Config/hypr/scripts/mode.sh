@@ -28,9 +28,9 @@ case $1 in
     # start
     iio-hyprland DSI-1 &                  # 屏幕旋转 优先确定屏幕方向
     swww-daemon &                         # swww-daemon
-    eww -c $EWW_CONF_DIR daemon &         # Eww daemon
+    eww -c daemon &         # Eww daemon
     sleep 0.3 && hyprctl dispatch dpms on # Dpms on 屏幕亮屏
-    sleep 0.5 && eww -c $EWW_CONF_DIR open bar && eww -c $EWW_CONF_DIR open bgdecor  # Eww
+    sleep 0.5 && eww open bar && eww open bgdecor  # Eww
     sleep 0.5 && $RANDWALL $WALLPAPER_DIR # wallpaper
     ;;
 esac
