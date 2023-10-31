@@ -9,6 +9,11 @@
 
 # Latest
 
+## 2023/10/31
+1.发现一个新的 Eww like, ( ags )[https://github.com/Aylur/ags] 性能和功能都比 Eww 更加强大
+2.替换配置，暂停 Eww，体验一段时间 ags
+3.inotify-tools 替换 dunst，配合 ags 配置
+
 ## 2023/10/17
 1. 添加一份 firefox 的 UI css 配置，仅仅将 firefox tools 的 icons 默认显示更改为一个实心圆点，让界面更加干净，将鼠标移到对应 icon 自动显示
 2. hyprland v 0.31.0 更新 https://github.com/hyprwm/Hyprland/releases/tag/v0.31.0

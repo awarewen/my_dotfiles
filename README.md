@@ -52,18 +52,18 @@ File system  : btrfs
     - 系统资源/进程监视器   : btop
     - 音频可视化            : cava
     - Audio                 : pipewire, playerctl
-    - 屏幕亮度              : light
-    - 通知                  : dunst
+    - 屏幕亮度              : light / brightness
+    - 通知                  : dunst / inotify-tools
     - 系统信息显示          : fastfetch (待更新至 config.jsonc 配置格式) , guifetch (https://github.com/FlafyDev/guifetch?ref=flutterawesome.com)
-    - Bar                   : waybar-hyprland-git (待考虑 EWW)
-    - 浏览器                : firefox-developer-edition
-    - 文件管理器            : thunar(GUI),ranger(CLI)
+    - Bar                   : ags[https://github.com/Aylur/ags] / (waybar-hyprland-git / Eww)
+    - 浏览器                : firefox-developer-edition firefox
+    - 文件管理器            : thunar(GUI), ranger(CLI)
     - 终端                  : kitty
     - 锁屏                  : swaylock, swayidle (DPMS support), swaylock-effects-git
     - 剪切板                : cliphist , wl-clip-persist-git, wl-clipboard
-    - 截屏                  : grim, slurp, swappy, imv
-    - 应用启动器            : rofi
-    - json 解释             : jq, gojq
+    - 截屏录屏              : grim, slurp, swappy, imv , flameshot, obs-studios-tytan652
+    - 应用启动器            : rofi / wofi
+    - json 解释             : jq / gojq
 
 # 可选的补充推荐软件列表
     - 文本编辑器            : neovim(CLI，截图中配置使用 [Evgeni Chasnovski dotfile](https://github.com/echasnovski/nvim) ), vscode(GUI)
@@ -77,6 +77,7 @@ File system  : btrfs
     - 流程图                : drawio
     - 图片管理              : xnviewmp
     - logout                : wlogout
+    - 颜色选取              : hyprpicker
 
 # 笔记本上可用的软件 (适配于GPD pocket 3)
     - 电源管理              : tlp
@@ -139,8 +140,11 @@ bind = $MAIN_MOD   $CTRL_MOD, 4,   exec, [float;noanim;toggleopaque] grim -o "$(
 bind = $MAIN_MOD   $CTRL_MOD, 5,   exec, [float;noanim;toggleopaque] grim -o "$(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r)" - | imv -f - & grim -g "$(slurp -d && killall imv-wayland)" - | swappy -f - && notify-send "暂停截屏"           # ## 暂停屏幕（伪）截屏
 ````
 
-## EWW (支持tray)
-- install: `yay -S eww-tray-wayland-git` , Arch Yes!
+## Bars
+- EWW (支持tray)
+    - install: `yay -S eww-tray-wayland-git` , Arch Yes!
+- AGS
+    - install: `yay -S aylurs-gtk-shell sassc inotify-tools`
 
 ## 2023/10/21 修复
 目前先将 end-4/dots-hyprland 中所有功能恢复正常工作，再开始修改以及添加新功能
@@ -149,5 +153,6 @@ bind = $MAIN_MOD   $CTRL_MOD, 5,   exec, [float;noanim;toggleopaque] grim -o "$(
 
 - [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland/tree/m3ww) ：作者很多实现的配置十分符合我的口味，我本来打算自己做现在可以偷懒了 ：）
 - [flick0/dotfiles](https://github.com/flick0/dotfiles) :我的配置是从此开始的，尽管现在我的配置已经面目全非了 ：）
+- [Aylur/dotfiles](https://github.com/Aylur/dotfiles)
 
 再次感谢!
