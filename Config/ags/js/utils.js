@@ -2,25 +2,22 @@ import cairo from 'cairo';
 import options from './options.js';
 import icons from './icons.js';
 import Theme from './services/theme/theme.js';
+import Gdk from 'gi://Gdk';
 import { Utils, App, Battery, Mpris, Audio } from './imports.js';
 
-/** @type {function(number, number): number[]}*/
 export function range(length, start = 1) {
     return Array.from({ length }, (_, i) => i + start);
 }
 
-/** @type {function([any], any): any}*/
 export function substitute(collection, item) {
     return collection.find(([from]) => from === item)?.[1] || item;
 }
 
-/** @type {function((id: number) => typeof Gtk.Widget): typeof Gtk.Widget[]}*/
 export function forMonitors(widget) {
-    const ws = JSON.parse(Utils.exec('hyprctl -j monitors'));
-    return ws.map((/** @type {Record<string, number>} */ mon) => widget(mon.id));
+    const n = Gdk.Display.get_default().get_n_monitors();
+    return range(n, 0).map(widget);
 }
 
-/** @type {function(Gtk.Widget): cairo.ImageSurface}*/
 export function createSurfaceFromWidget(widget) {
     const alloc = widget.get_allocation();
     const surface = new cairo.ImageSurface(
@@ -99,8 +96,7 @@ export async function globalServices() {
     globalThis.theme = (await import('./services/theme/theme.js')).default;
 }
 
-/** @type {function(Applications.Application): void}*/
 export function launchApp(app) {
-    Utils.execAsync(`hyprctl dispatch exec ${app.executable}`);
+    Utils.execAsync(['hyprctl', 'dispatch', 'exec', `sh -c ${app.executable}`]);
     app.frequency += 1;
 }

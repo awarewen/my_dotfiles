@@ -55,7 +55,7 @@ File system  : btrfs
     - 屏幕亮度              : light / brightness
     - 通知                  : dunst / inotify-tools
     - 系统信息显示          : fastfetch (待更新至 config.jsonc 配置格式) , guifetch (https://github.com/FlafyDev/guifetch?ref=flutterawesome.com)
-    - Bar                   : ags[https://github.com/Aylur/ags] / (waybar-hyprland-git / Eww)
+    - Bar                   : aylurs-gtk-shell [https://github.com/Aylur/ags] / (waybar-hyprland-git / Eww)
     - 浏览器                : firefox-developer-edition firefox
     - 文件管理器            : thunar(GUI), ranger(CLI)
     - 终端                  : kitty
