@@ -29,15 +29,15 @@
 #                                    J▓▓▓▓▓▓▓▓▓▌▒▓░▒▒w▄H   :░░▀▓▓▓▓▓▓▓▓█
 #                                   ▄▌▓▓▓╫▓▓▓▓▓▓▒▌░░░░▓     ░▒▒▒╫▓▓▓▓╫▓█
 #                                  *▀╜╜╜╜▀▀╜╜╜╜╜╜▀ºººº┘     "ª╨╨╜╜╜▀╜▀╜▀
-#                                                   Aware-wen
+#                                                   @Aware-wen
 #                                                       .
 #                                                      / \
 #                                        #            /   \          | *
 #                          a##e #%" a#"e 6##%        /^.   \       | | |-^-. |   | \ /
 #                         .oOo# #   #    #  #       /  .-.  \      | | |   | |   |  X
 #                         %OoO# #   %#e" #  #      /  (   ) _\     | | |   | ^._.| / \         TM
-#                                                 / _.~ T ~._^\
-#                                                /.^    M    ^.\
+#                                                 / _.~   ~._^\
+#                                                /.^         ^.\
 #
 ##############################################################################################################
 
@@ -118,11 +118,17 @@ export _ZO_FZF_OPTS='--height 60% --layout=reverse-list --border --preview "echo
 export FZF_DEFAULT_COMMAND='fd --hidden --follow . /home/awarewen /etc /usr' #. /etc /home
 export FZF_DEFAULT_OPTS='--height 60% --layout=reverse-list --border --preview "echo {} | ~/.config/fzf/fzf_preview.py" --preview-window=right -m'
 
-alias l='exa'
-alias ls='exa'
-alias ll='exa'
-#alias l='ls --color=auto -p'
-#alias ls='ls --color=auto -p'
+alias l='eza -a'
+alias ls='eza -alhG'
+alias ll='eza -lhiogab --icons --group-directories-first'
+alias lls='eza -lhioGgab --icons --group-directories-first'
+alias lll='eza -lhiogab --icons'
+alias llls='eza -lhioGgab --icons'
+alias ld='eza -liogab --icons -D'
+alias lds='eza -lioGgab --icons -D'
+alias lf='eza -liogab --icons -f'
+alias lfs='eza -lioGgab --icons -f'
+
 alias s='sudo'
 alias yays="paru -Slq | fzf --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
 alias yayr="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
@@ -141,6 +147,17 @@ alias gomusicfox='~/Downloads/Github/go-musicfox/bin/musicfox'
 
 # fars
 alias fars='curl -F "c=@-" "https://fars.ee"'
+
+# mpv play list
+alias mpvl='mpv --player-operation-mode=pseudo-gui'
+
+# 查看字体的 family name
+alias FontsFamilyName="fc-query -f '%{family[0]}\n'"
+
+alias yayw="sudo pacman -Sy && sudo powerpill -Su && paru -Su"
+
+# 列出已安装的 pkg 包大小 https://wiki.archlinux.org/title/Pacman/Tips_and_tricks#aria2
+alias pacmanlist="LC_ALL=C pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h"
 
 ## Kitty SSH
 ## 使用kitty 提供的ssh
