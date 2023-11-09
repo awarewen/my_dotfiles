@@ -24,8 +24,9 @@
 
 - Aylurs-gtk-shell Bar
 <p align="center">
-<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/hyprland_ags1.png">
-<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/hyprland_ags2.png">
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/hyprland_ags1.png" width=49%>
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/hyprland_ags2.png" width=49%>
+<img src="https://github.com/awarewen/my_dotfiles/blob/main/Home/Picture/Screenshots/hyprland/hyprland_ags3.png">
 </p>
 
 ---
