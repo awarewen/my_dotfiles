@@ -167,4 +167,4 @@ fi
 
 # EDIOR .zshrc
 alias Ezsh='nvim ~/.zshrc'
-alias ff='fastfetch'
+alias ff='fastfetch -c ~/.config/fastfetch/config_1.jsonc'
