@@ -17,6 +17,18 @@ fi
 # This controls (in seconds) when to switch to the next image
 INTERVAL=300
 
+Read_Dir (){
+}
+
+Color_overlay (){
+}
+
+Switch_Wall (){
+}
+
+# 通过接受信号来停止切换和恢复切换
+Sleep_wait (){
+}
 	#if pgrep -x swaylock; then continue; fi   ## 添加新功能在lock情况下停止切换壁纸行为
 while true; do
 	find "$1" \
@@ -26,6 +38,7 @@ while true; do
   | sort -n | cut -d':' -f2- \
   | while read -r img; do \
 			sleep $INTERVAL
+      sleep_pid=$! # 保存sleep pid 用于终止切换
 
 			COR=$(printf "%02x" $(($RANDOM % 156 + 100)))
 			COG=$(printf "%02x" $(($RANDOM % 156 + 100)))
@@ -52,6 +65,9 @@ while true; do
 			#done
 		done
 done
+
+# 添加功能在全屏应用启动后禁止切换壁纸
+# socat - "UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
 
 #(https://cubic-bezier.com/#.1,.9,.79,.11)
 
