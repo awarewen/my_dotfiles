@@ -170,6 +170,57 @@ submap=reset
 - AGS
     - install: `yay -S aylurs-gtk-shell sassc inotify-tools`
 
+
+## keybind 的主要思路
+为了避免占用其他的功能键 `ctrl, alt` 导致快捷键冲突，将不同的桌面操作的快捷键分成多个 `submap`，更好的统一快捷键减少记忆的负担和使用成本
+- `Submap` 的嵌套
+```
+# 进入 submap
+bind = x, x, exec, hyprctl dispatch submap Action
+submap=Action
+    ...
+    # 子项
+    bind = x, x, exec, hyprctl dispatch submap Action_2
+    submap=Action_2
+
+        # 其他快捷键
+        bind = x,x,xxx
+
+        # 返回上一层的 Action submap
+        bind = x, x, exec, hyprctl dispatch submap Action
+        # 退出当前整个 submap
+        bind = x, x, exec, hyprctl dispatch submap reset
+
+    # 子项 2
+    bind = x, x, exec, hyprctl dispatch submap Action_3
+    submap=Action_3
+
+        # 其他快捷键
+        bind = x,x,xxx
+
+        # 返回上一层的 Action submap
+        bind = x, x, exec, hyprctl dispatch submap Action
+        # 退出当前整个 submap
+        bind = x, x, exec, hyprctl dispatch submap reset
+            # 子项 2-1
+            bind = x, x, exec, hyprctl dispatch submap Action_2-1
+            submap=Action_2-1
+
+                # 其他快捷键
+                bind = x,x,xxx
+
+                # 返回上一层的 Action submap
+                bind = x, x, exec, hyprctl dispatch submap Action
+                # 退出当前整个 submap
+                bind = x, x, exec, hyprctl dispatch submap reset
+
+退出当前整个 submap
+bind = x, x, exec, hyprctl dispatch submap reset
+submap=reset
+
+```
+
+
 ## 2023/10/21 修复
 目前先将 end-4/dots-hyprland 中所有功能恢复正常工作，再开始修改以及添加新功能
 
