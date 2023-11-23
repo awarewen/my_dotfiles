@@ -12,65 +12,95 @@ if [[ $# -lt 1 ]] || [[ ! -d $1 ]]; then
 	exit 1
 fi
 
-# Edit bellow to control the images transition
+# 获取壁纸文件夹路径
+IMG_DIR=$1
 
-# This controls (in seconds) when to switch to the next image
-INTERVAL=300
+# 图片轮换时间
+INTERVAL=60
 
-Read_Dir (){
+
+# swww 切换参数值
+FPS=120
+STEP=255
+## (https://cubic-bezier.com/#.1,.9,.79,.11)
+BEZIER=.1,1,.1,.4 # .1,1,.1,.1
+TYPE=any
+DURATION=2.4
+## wipe和wave用于控制擦除的角度
+ANGLE=wipe
+
+# swww 切换可选参数
+swww_option() {
+   local transition_args=(
+      "--transition-fps"      "$FPS"
+      "--transition-step"     "$STEP"
+      "--transition-bezier"   "$BEZIER"
+      "--transition-type"     "$TYPE"
+      "--transition-duration" "$DURATION"
+#     "--transition-angle"    "$ANGLE"
+  )
+  echo "${transition_args[@]}"
 }
 
-Color_overlay (){
-}
-
-Switch_Wall (){
-}
 
 # 通过接受信号来停止切换和恢复切换
-Sleep_wait (){
+sleep_wait() {
+    sleep $INTERVAL
+
+    # 保存sleep pid 用于终止切换
+    SLEEP_PID=$!
 }
-	#if pgrep -x swaylock; then continue; fi   ## 添加新功能在lock情况下停止切换壁纸行为
+
+# 读取指定目录下的文件
+read_image_path() {
+  find "$IMG_DIR" -maxdepth 1 -type f -print0 \
+  | shuf -z -n 1 \
+  | xargs -0 echo
+}
+
+# 生成清屏的纯色背景
+generate_random_color() {
+    printf "%02x%02x%02x" $((RANDOM % 156 + 100)) $((RANDOM % 156 + 100)) $((RANDOM % 156 + 100))
+}
+
+# wallpaper switch
 while true; do
-	find "$1" \
-  | while read -r img; do \
-			echo "$((RANDOM % 1000)):$img"
-		done \
-  | sort -n | cut -d':' -f2- \
-  | while read -r img; do \
-			sleep $INTERVAL
-      sleep_pid=$! # 保存sleep pid 用于终止切换
 
-			COR=$(printf "%02x" $(($RANDOM % 156 + 100)))
-			COG=$(printf "%02x" $(($RANDOM % 156 + 100)))
-			COB=$(printf "%02x" $(($RANDOM % 156 + 100)))
-			## 清除
-			swww clear $COR$COG$COB
+  # 读取指定目录下的文件
+  IMG_PATH="$( read_image_path )"
 
-			## Monitors
-			# 后续将支持多个屏幕随机壁纸切换包括 横屏+竖屏 横屏+横屏 (或自动检测新屏幕并添加)
-			#MONITOR_COUNT=$(hyprctl monitors -j | jq '. | length')  ## 计数
-			#for ((i=0; i<MONITOR_COUNT;i++)) do
-			#MONITOR=$(hyprctl monitors -j | jq -r '.[$i].name')  ## 名称
-			#swww img "$img" --outputs DSI-1 \
-			#swww img "$img" --outputs $MONITOR \
-			swww img "$img" \
-				--transition-fps 60 \
-				--transition-step 250 \
-				--transition-bezier .1,1,.1,.4 \
-				--transition-type any \
-				--transition-duration 4
-			#--transition-pos any \
-			#--transition-pos "$(hyprctl cursorpos)" \
+  # 清屏
+  swww clear $( generate_random_color )
 
-			#done
-		done
+  # 切换壁纸
+  swww img "$IMG_PATH" $( swww_option )
+
+  # 等待进入下一轮切换
+  sleep_wait
 done
+
+
+
+# # ======================================================================#
+# Funstion < read_image >
+# # ======================================================================#
+
+# <find>
+# 使用 -print0 选项将 find 的输出以 null 终止的方式打印，以处理文件名中可能包含空格等特殊字符的情况。
+
+# <shuf>
+# 命令用于随机排列、选择或抽样输入行，并将结果写入标准输出。它可以用于生成随机数据或对输入数据进行乱序处理。
+# @ '-z'    :选项告诉 shuf 使用 null 字符（而不是换行符）作为行分隔符
+# @ '-n 1'  :则指定只选择一个随机行。
+
+
+## Monitors
+# 后续将支持多个屏幕随机壁纸切换包括 横屏+竖屏 横屏+横屏 (或自动检测新屏幕并添加)
+# MONITOR_COUNT=$(hyprctl monitors -j | jq '. | length')  ## 计数
+# for ((i=0; i<MONITOR_COUNT;i++)) do
+# MONITOR=$(hyprctl monitors -j | jq -r '.[$i].name')  ## 名称
+# swww img "$img" --outputs $MONITOR \
 
 # 添加功能在全屏应用启动后禁止切换壁纸
 # socat - "UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
 
-#(https://cubic-bezier.com/#.1,.9,.79,.11)
-
-#--transition-bezier .1,1,.1,.1 \ 快速的切换效果不错
-#--transition-angle \  ## wipe和wave用于控制擦除的角度
-#--transition-type grow \
