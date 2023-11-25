@@ -1,6 +1,7 @@
+import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 import GLib from 'gi://GLib';
 import options from './options.js';
-import { Variable } from './imports.js';
+import { execAsync, interval } from 'resource:///com/github/Aylur/ags/utils.js';
 
 const intval = options.systemFetchInterval;
 
@@ -31,7 +32,7 @@ export const distroIcon = (() => {
     }
 })();
 
-/** @type {function([string, string]): number} */
+/** @type {function([string, string] | string[]): number} */
 const divide = ([total, free]) => Number.parseInt(free) / Number.parseInt(total);
 
 export const cpu = Variable(0, {

@@ -1,7 +1,6 @@
+import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Avatar from '../misc/Avatar.js';
-import Spinner from '../misc/Spinner.js';
 import Lockscreen from '../services/lockscreen.js';
-import { Widget } from '../imports.js';
 import Layer from 'gi://GtkLayerShell';
 
 const PasswordEntry = () => Widget.Box({
@@ -10,17 +9,19 @@ const PasswordEntry = () => Widget.Box({
             connections: [[Lockscreen, entry => entry.text = '', 'lock']],
             visibility: false,
             placeholder_text: 'Password',
-            on_accept: ({ text }) => Lockscreen.auth(text),
+            on_accept: ({ text }) => Lockscreen.auth(text || ''),
             hpack: 'center',
             hexpand: true,
         }),
-        Spinner({
+        Widget.Spinner({
+            active: true,
             vpack: 'center',
             connections: [[Lockscreen, (w, auth) => w.visible = auth, 'authenticating']],
         }),
     ],
 });
 
+/** @param {number} monitor */
 export default monitor => {
     const win = Widget.Window({
         name: `lockscreen${monitor}`,

@@ -1,8 +1,9 @@
+import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
+import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as mpris from '../../misc/mpris.js';
-import { Mpris, Widget } from '../../imports.js';
+import options from '../../options.js';
 
-const blackList = ['Caprine'];
-
+/** @param {import('types/service/mpris').MprisPlayer} player */
 const Footer = player => Widget.CenterBox({
     class_name: 'footer-box',
     children: [
@@ -32,6 +33,7 @@ const Footer = player => Widget.CenterBox({
     ],
 });
 
+/** @param {import('types/service/mpris').MprisPlayer} player */
 const TextBox = player => Widget.Box({
     children: [
         mpris.CoverArt(player, {
@@ -62,6 +64,7 @@ const TextBox = player => Widget.Box({
     ],
 });
 
+/** @param {import('types/service/mpris').MprisPlayer} player */
 const PlayerBox = player => Widget.Box({
     class_name: `player ${player.name}`,
     child: mpris.BlurredCoverArt(player, {
@@ -82,7 +85,13 @@ const PlayerBox = player => Widget.Box({
 
 export default () => Widget.Box({
     vertical: true,
-    class_name: 'media',
-    binds: [['children', Mpris, 'players', ps =>
-        ps.filter(p => !blackList.includes(p.identity)).map(PlayerBox)]],
+    class_name: 'media vertical',
+    connections: [['draw', self => {
+        self.visible = Mpris.players.length > 0;
+    }]],
+    binds: [
+        ['children', Mpris, 'players', ps =>
+            ps.filter(p => !options.mpris.black_list.value
+                .includes(p.identity)).map(PlayerBox)],
+    ],
 });

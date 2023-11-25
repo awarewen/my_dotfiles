@@ -1,11 +1,11 @@
+import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import PanelButton from '../PanelButton.js';
 import Recorder from '../../services/screenrecord.js';
 import icons from '../../icons.js';
-import { Widget } from '../../imports.js';
 
 export default () => PanelButton({
     class_name: 'recorder',
-    onClicked: () => Recorder.stop(),
+    on_clicked: () => Recorder.stop(),
     binds: [['visible', Recorder, 'recording']],
     content: Widget.Box({
         children: [

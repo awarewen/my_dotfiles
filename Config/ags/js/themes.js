@@ -1,195 +1,145 @@
-import { Utils } from './imports.js';
-const WP = `/home/${Utils.USER}/Pictures/Wallpapers/`;
-
 /**
- * @param {Record<string, string>} scheme
- * @param {function(string): string} edit
- * @returns {Record<string, string>}
+ * A Theme is a set of options that will be applied
+ * ontop of the default values. see options.js for possible options
  */
-const editScheme = (scheme, edit) => {
-    /** @type {Record<string, string>} */
-    const obj = {};
-    Object.keys(scheme).forEach(color => {
-        obj[color] = edit(scheme[color]);
-    });
-    return obj;
-};
-
-const gnome = {
-    red: '#f66151',
-    green: '#57e389',
-    yellow: '#f6d32d',
-    blue: '#62a0ea',
-    magenta: '#c061cb',
-    teal: '#5bc8aF',
-    orange: '#ffa348',
-};
-
-const charm = {
-    red: '#e55f86',
-    green: '#00D787',
-    yellow: '#EBFF71',
-    blue: '#51a4e7',
-    magenta: '#9077e7',
-    teal: '#51e6e6',
-    orange: '#E79E64',
-};
-
-const dark = {
-    color_scheme: 'dark',
-    bg_color: '#171717',
-    fg_color: '#eee',
-    hover_fg: '#f1f1f1',
-    ...charm,
-};
-
-const light = {
-    color_scheme: 'light',
-    bg_color: '#fffffa',
-    fg_color: '#141414',
-    hover_fg: '#0a0a0a',
-    ...editScheme(gnome, c => `darken(${c}, 8%)`),
-};
-
-const misc = {
-    wm_gaps: 22,
-    radii: 9,
-    spacing: 9,
-    shadow: 'rgba(0, 0, 0, .6)',
-    drop_shadow: true,
-    transition: 200,
-    screen_corners: true,
-    bar_style: 'normal',
-    layout: 'topbar',
-    desktop_clock: 'center center',
-    font: 'Ubuntu Nerd Font',
-    mono_font: 'Mononoki Nerd Font',
-    font_size: 16,
-};
-
-const colors = {
-    wallpaper_fg: 'white',
-    hypr_active_border: 'rgba(3f3f3fFF)',
-    hypr_inactive_border: 'rgba(3f3f3fDD)',
-    accent: '$blue',
-    accent_fg: '#141414',
-    widget_bg: '$fg_color',
-    widget_opacity: 94,
-    active_gradient: 'to right, $accent, lighten($accent, 6%)',
-    border_color: '$fg_color',
-    border_opacity: 97,
-    border_width: 1,
-};
-
-// themes
-const kitty_dark = {
-    wallpaper: WP + 'kitty.jpeg',
-    name: 'kitty_dark',
-    icon: '󰄛',
-    ...dark,
-    ...misc,
-    ...colors,
-};
-
-const kitty_light = {
-    wallpaper: WP + 'kitty.jpeg',
-    name: 'kitty_light',
-    icon: '󰄛',
-    ...light,
-    ...misc,
-    ...colors,
-    widget_bg: '$accent',
-    widget_opacity: 84,
-};
-
-const leaves_dark = {
-    ...kitty_dark,
-    wallpaper: WP + 'leaves.jpg',
-    name: 'leaves_dark',
-    icon: '󰌪',
-    accent: '$green',
-    widget_opacity: 92,
-    active_gradient: 'to right, $accent, darken($accent, 14%)',
-    border_opacity: 86,
-    bg_color: 'transparentize(#171717, 0.3)',
-    hypr_active_border: 'rgba(57e389FF)',
-    bar_style: 'floating',
-    radii: 0,
-    wallpaper_fg: 'white',
-    additional_scss: `
-        window#quicksettings .quicksettings {
-            margin-right: $wm_gaps;
-        }
-    `,
-};
-
-const leaves_light = {
-    ...leaves_dark,
-    ...light,
-    name: 'leaves_light',
-    accent: 'darken($green, 10%)',
-    bg_color: 'transparentize(#fff, 0.1)',
-    active_gradient: 'to right, $accent, darken($accent, 6%)',
-};
-
-const ivory = {
-    wallpaper: WP + 'ivory.png',
-    name: 'ivory',
-    icon: '󰟆',
-    ...light,
-    ...misc,
-    ...colors,
-    bg_color: '#fffff0',
-    bar_style: 'separated',
-    widget_bg: '$accent',
-    widget_opacity: 64,
-    drop_shadow: false,
-    border_width: 2,
-    border_opacity: 0,
-    active_gradient: 'to right, $accent, darken($accent, 6%)',
-    wallpaper_fg: '$bg_color',
-    hypr_active_border: 'rgba(111111FF)',
-    additional_scss: `
-        window#quicksettings .quicksettings,
-        window#dashboard .dashboard {
-            margin-top: 0;
-        }
-    `,
-};
-
-const cutefish = {
-    ...kitty_dark,
-    wallpaper: WP + 'cutefish.jpeg',
-    name: 'cutefish',
-    icon: '󰈺',
-    accent: 'lighten($blue, 20%)',
-    active_gradient: 'to right, $accent, lighten(mix($orange, $blue, 70%), 20%)',
-    border_opacity: 94,
-    brorder_width: 2,
-    radii: 9,
-    desktop_clock: 'end end',
-    hypr_active_border: 'rgba(3f3f3fFF)',
-    bg_color: 'transparentize(#171717, 0.3)',
-};
-
-const cherry = {
-    ...kitty_dark,
-    wallpaper: WP + 'cherry.png',
-    name: 'cherry',
-    icon: '',
-    accent: '$blue',
-    active_gradient: 'to right, $accent, lighten(mix($magenta, $blue, 70%), 18%)',
-    brorder_width: 2,
-    radii: 13,
-    bg_color: 'transparentize(#171717, 0.3)',
-};
+import { Theme, WP, lightColors } from './settings/theme.js';
 
 export default [
-    kitty_dark,
-    kitty_light,
-    leaves_dark,
-    leaves_light,
-    ivory,
-    cutefish,
-    cherry,
+    Theme({
+        name: 'Kitty Dark',
+        icon: '󰄛',
+        'desktop.wallpaper.img': WP + 'kittybl.jpeg',
+    }),
+    Theme({
+        name: 'Kitty Light',
+        icon: '󰄛',
+        'desktop.wallpaper.img': WP + 'kitty.jpeg',
+        ...lightColors,
+        'theme.widget.bg': '$accent',
+        'theme.widget.opacity': 64,
+    }),
+    Theme({
+        name: 'Leaves',
+        icon: '󰌪',
+        'desktop.wallpaper.img': WP + 'leaves.jpg',
+        'theme.accent.accent': '$green',
+        'theme.accent.gradient': 'to right, $accent, darken($accent, 14%)',
+        'theme.widget.opacity': 92,
+        'border.opacity': 86,
+        'theme.bg': 'transparentize(#171717, 0.3)',
+        'bar.style': 'floating',
+        'radii': 0,
+    }),
+    Theme({
+        name: 'Ivory',
+        icon: '󰟆',
+        ...lightColors,
+        'desktop.wallpaper.img': WP + 'ivory.png',
+        'desktop.wallpaper.fg': '$bg_color',
+        'desktop.screen_corners': false,
+        'bar.style': 'separated',
+        'theme.widget.bg': '$accent',
+        'theme.widget.opacity': 64,
+        'desktop.drop_shadow': false,
+        'border.width': 2,
+        'border.opacity': 0,
+        'theme.accent.gradient': 'to right, $accent, darken($accent, 6%)',
+        'hypr.inactive_border': 'rgba(111111FF)',
+        'bar.separators': false,
+    }),
+    Theme({
+        name: 'Space',
+        icon: '',
+        'desktop.wallpaper.img': WP + 'space.jpg',
+        'spacing': 11,
+        'padding': 10,
+        'radii': 12,
+        'theme.accent.accent': '$magenta',
+        'desktop.screen_corners': false,
+        'desktop.clock.enable': false,
+        'bar.separators': false,
+        'bar.icon': '',
+        'theme.bg': 'transparentize(#171717, 0.3)',
+        'theme.widget.opacity': 95,
+        'bar.flat_buttons': false,
+    }),
+      Theme({
+      name: 'My-theme',
+      icon: 'A',
+      "spacing": 8,
+      "padding": 9,
+      "radii": 20,
+      "popover_padding_multiplier": 1,
+      "color.red": "#e55f86",
+      "color.green": "#00D787",
+      "color.yellow": "#EBFF71",
+      "color.blue": "#51a4e7",
+      "color.magenta": "#9077e7",
+      "color.teal": "#51e6e6",
+      "color.orange": "#E79E64",
+      "theme.scheme": "dark",
+      "theme.bg": "transparentize(#171717, 0.3)",
+      "theme.fg": "#eeeeee",
+      "theme.accent.accent": "$magenta",
+      "theme.accent.fg": "#141414",
+      "theme.accent.gradient": "to right, $accent, lighten($accent, 6%)",
+      "theme.widget.bg": "$fg-color",
+      "theme.widget.opacity": 97,
+      "border.color": "$fg-color",
+      "border.opacity": 100,
+      "border.width": 4,
+      "hypr.inactive_border": "rgba(333333ff)",
+      "hypr.wm_gaps_multiplier": 3,
+      "font.font": "HYLeMiaoTiJ Bold 10",
+      "font.mono": "HYLeMiaoTiJ Bold",
+      "font.size": 13,
+      "applauncher.width": 500,
+      "applauncher.height": 500,
+      "applauncher.icon_size": 52,
+      "bar.position": "top",
+      "bar.style": "separated",
+      "bar.flat_buttons": false,
+      "bar.separators": false,
+      "bar.icon": "",
+      "battery.bar.width": 80,
+      "battery.bar.height": 17,
+      "battery.low": 30,
+      "battery.medium": 50,
+      "desktop.wallpaper.fg": "#fff",
+      "desktop.wallpaper.img": "/home/awarewen/.config/ags/assets/space.jpg",
+      "desktop.avatar": "/home/awarewen/Pictures/mypictures/emojis/gura_020.png",
+      "desktop.screen_corners": false,
+      "desktop.clock.enable": true,
+      "desktop.clock.position": "center center",
+      "desktop.drop_shadow": true,
+      "desktop.shadow": "rgba(0, 0, 0, .6)",
+      "desktop.dock.icon_size": 56,
+      "desktop.dock.pinned_apps": [
+        "firefox",
+        "org.wezfurlong.wezterm",
+        "org.gnome.Nautilus",
+        "org.gnome.Calendar",
+        "obsidian",
+        "transmission-gtk",
+        "caprine",
+        "teams-for-linux",
+        "discord",
+        "spotify",
+        "com.usebottles.bottles",
+        "org.gnome.Software"
+      ],
+      "notifications.black_list": [
+        "Spotify"
+      ],
+      "notifications.position": [
+        "top"
+      ],
+      "notifications.width": 450,
+      "dashboard.sys_info_size": 70,
+      "mpris.black_list": [
+        "Caprine"
+      ],
+      "mpris.preferred": "spotify",
+      "workspaces": 7,
+  }),
 ];

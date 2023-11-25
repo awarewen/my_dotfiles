@@ -1,17 +1,18 @@
+import { readFile } from 'resource:///com/github/Aylur/ags/utils.js';
 import App from 'resource:///com/github/Aylur/ags/app.js';
-const expectedVersion = '1.5.1';
-let config = {};
+const pkgjson = JSON.parse(readFile(App.configDir + '/package.json'));
 
-if (pkg.version === expectedVersion) {
-    config = (await import('./js/main.js')).default;
-}
-else {
-    print('your ags version is ' + pkg.version);
-    // print('my config uses the git branch which is ' + expectedVersion);
-    // print('update ags to the current git version');
-    // FIXME: remove this line after merging #153
-    print('my config uses the feat/widgets-subclass-rewrite branch');
+const v = {
+    ags: `v${pkg.version}`,
+    expected: `v${pkgjson.version}`,
+};
+
+function mismatch() {
+    print(`my config expects ${v.expected}, but your ags is ${v.ags}`);
     App.connect('config-parsed', app => app.Quit());
+    return {};
 }
 
-export default config;
+export default v.ags === v.expected
+    ? (await import('./js/main.js')).default
+    : mismatch();

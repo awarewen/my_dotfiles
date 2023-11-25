@@ -1,15 +1,20 @@
+import Widget from 'resource:///com/github/Aylur/ags/widget.js';
+import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
+import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import PanelButton from '../PanelButton.js';
-import { Hyprland, Utils, Widget } from '../../imports.js';
 import options from '../../options.js';
 import { substitute } from '../../utils.js';
-const { icons, titles } = options.substitutions;
 
 export const ClientLabel = () => Widget.Label({
-    binds: [['label', Hyprland.active.client, 'class', c => substitute(titles, c)]],
+    binds: [['label', Hyprland.active.client, 'class', c => {
+        const { titles } = options.substitutions;
+        return substitute(titles, c);
+    }]],
 });
 
 export const ClientIcon = () => Widget.Icon({
     connections: [[Hyprland.active.client, self => {
+        const { icons } = options.substitutions;
         const { client } = Hyprland.active;
 
         const classIcon = substitute(icons, client.class) + '-symbolic';
@@ -24,7 +29,7 @@ export const ClientIcon = () => Widget.Icon({
         if (hasTitleIcon)
             self.icon = titleIcon;
 
-        self.visible = hasTitleIcon || hasClassIcon;
+        self.visible = !!(hasTitleIcon || hasClassIcon);
     }]],
 });
 

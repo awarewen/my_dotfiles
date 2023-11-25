@@ -1,6 +1,7 @@
+import Widget from 'resource:///com/github/Aylur/ags/widget.js';
+import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
 import icons from '../icons.js';
 import Notification from '../misc/Notification.js';
-import { Widget, Notifications } from '../imports.js';
 
 const ClearButton = () => Widget.Button({
     on_clicked: () => Notifications.clear(),
@@ -57,8 +58,6 @@ export default () => Widget.Box({
         Widget.Scrollable({
             vexpand: true,
             class_name: 'notification-scrollable',
-            hscroll: 'never',
-            vscroll: 'automatic',
             child: Widget.Box({
                 class_name: 'notification-list',
                 vertical: true,
