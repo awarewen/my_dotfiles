@@ -11,7 +11,7 @@
 PID_FILE=/tmp/wallpaper_script_pid # 脚本 PID 文件
 PAUSED=false                       # 暂停切换状态初始化
 TIMER=0                            # 计时器初始化
-TIMER_MAX=300                       # 计时器上限，图片轮换时间
+TIMER_MAX=10                       # 计时器上限，图片轮换时间
 # ====================================
 # swww 切换参数值
 OUTPUT=none       # 屏幕输出
@@ -32,9 +32,9 @@ WAVE=20,20        # For TYPE=wave, Def: 20,20
 function manual_switch_signal { # 注册手动切换信号的处理函数 signal= CONT
     TIMER=0 # 重置计时器
     IMG_PATH="$( random_image_path )"
-    echo "manual_switch_signal"
-    echo PATH: $IMG_PATH
-    echo WALLPAPERS_PATH: $WALLPAPERS_PATH
+    #echo "manual_switch_signal"
+    #echo PATH: $IMG_PATH
+    #echo WALLPAPERS_PATH: $WALLPAPERS_PATH
     swww clear $( generate_random_color )
     swww img "$IMG_PATH" $( swww_option )
 }
@@ -112,40 +112,34 @@ function deamon { # wallpaper switch
 case $1 in # Main
 
   "-d" | "--deamon" ) # 初始化壁纸切换
-    pid_create # Function: creat a pid file
+      pid_create # Function: creat a pid file
       if [[ $# -ne 2 ]]; then
         echo "Usage:
       $0 manual <dir containg images>"
       exit 1
+      fi
 
-    WALLPAPERS_PATH=("$2"/*)           # wallpapers path
+      WALLPAPERS_PATH=("$2"/*)           # wallpapers path
 
-    if [ -f $PID_FILE ] && [ $(cat $PID_FILE) == $$ ]; then deamon # Function: deamon start
-    elif [ -f $PID_FILE ] && [ -d /proc/$(cat $PID_FILE) ]; then
-      notify-send "Error: $PID_FILE is exist. $0 is already running. "
-      exit 1
-    else
-      echo "$PID_FILE not found"
-      exit 1
-    fi
+      if [ -f $PID_FILE ] && [ $(cat $PID_FILE) == $$ ]; then deamon # Function: deamon start
+      elif [ -f $PID_FILE ] && [ -d /proc/$(cat $PID_FILE) ]; then
+        notify-send "Error: $PID_FILE is exist. $0 is already running. "
+        exit 1
+      else
+        echo "$PID_FILE not found"
+        exit 1
+      fi
     ;;
 
   "-m" | "--manual" )    # 手动切换
-    if [[ $# -ne 2 ]]; then
-      echo "Usage:
-      $0 manual <dir containg images>"
-      exit 1
-    fi
+      if [[ $# -ne 2 ]]; then
+        echo "Usage:
+        $0 manual <dir containg images>"
+        exit 1
+      fi
 
-    WALLPAPERS_PATH=("$2"/*) # read wallpapers path
-    if [ -f $PID_FILE ]; then
-      kill -USR1 $(cat $PID_FILE)
-    else
+      WALLPAPERS_PATH=("$2"/*) # read wallpapers path
       manual_switch_signal
-    fi
-#    notify-send "deamon is not running. $0 deamon <dir containg images>"
-#    exit 1
-
     ;;
 
   * )
