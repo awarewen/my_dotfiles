@@ -20,11 +20,11 @@ FULL_COLOR=000000 # 填充颜色 Def: 000000 , Need IMG_RESIZE=fit
 FILTER=Lanczos3   # 缩放图像时使用的滤镜 Def: Lanczos3 [Nearest, bilinear, Catmullrom, Mitchell, Lanczos3]
 TYPE=random       # 切换过渡 Def: simple [none, simple, fade, left, right, top, bottom, wipe, wave, grow, center, any, outer, random]
 STEP=255          # 过渡效果速度 ( TYPE=simple STEP=2 ), Def: 90
-DURATION=2.4      # 完成过度效果时间 (单位 s) Def: 3, 不适用于 TYPE=simple
 FPS=255           # 过渡效果帧 Def: 45
 ANGLE=45          # For TYPR=wipe/wave, Def: 45
 POS=center        # For TYPE=grow/outer, Def: center ['center', 'top', 'left', 'right', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right']
-BEZIER=.1,1,.1,.4 # .1,1,.1,.1 Def: 54,0,.34,.99 , (https://cubic-bezier.com/#.1,.9,.79,.11)
+DURATION=2.4      # 完成过度效果时间 (单位 s) Def: 3, 不适用于 TYPE=simple
+BEZIER=.1,1,.1,.4 #0.85,0,0.15,1 #特别平滑:0,0.55,0.45,1 #.1,1,.1,.4 #.1,1,.1,.1 Def: 54,0,.34,.99 , (https://cubic-bezier.com/#.1,.9,.79,.11, https://easings.net/zh-cn)
 WAVE=20,20        # For TYPE=wave, Def: 20,20
 ## wipe和wave用于控制擦除的角度
 # ====================================
@@ -36,6 +36,7 @@ function manual_switch_signal { # 注册手动切换信号的处理函数 signal
     #echo PATH: $IMG_PATH
     #echo WALLPAPERS_PATH: $WALLPAPERS_PATH
     swww clear $( generate_random_color )
+    sleep 0.2 #  ）
     swww img "$IMG_PATH" $( swww_option )
 }
 trap 'manual_switch_signal' SIGUSR1
