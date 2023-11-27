@@ -72,7 +72,7 @@ File system  : btrfs
     - 终端                  : kitty
     - 锁屏                  : swaylock, swayidle (DPMS support), swaylock-effects-git
     - 剪切板                : cliphist , wl-clip-persist-git, wl-clipboard
-    - 截屏录屏              : grim, slurp, swappy, imv , flameshot, obs-studios-tytan652
+    - 截屏录屏              : grim, slurp, swappy, imv , obs-studios-tytan652
     - 应用启动器            : rofi / wofi
     - json 解释             : jq / gojq
 
@@ -141,34 +141,36 @@ exec-once = wl-clip-persist --clipboard both              # Use Regular and Prim
 ````
 
 ## Screenshots (截屏)
-- ~Flameshot 在 hyprland 下无法正常使用~，且也没其他截屏软件可代替的情况下，由于"grim+slurp"无法暂停屏幕截屏，即采用以下曲线救国的方案。(感谢群友"[maya](https://mayapony.site/)"以及其他群佬提供方案)
+- ~Flameshot 不再使用，且也没其他截屏软件可代替的情况下，由于"grim+slurp"无法暂停屏幕截屏~，即采用以下曲线救国的方案。(感谢群友"[maya](https://mayapony.site/)"以及其他群佬提供方案)
 基于这个想法目前已经可以截取当前活动窗口的截图
 ````
 # Screenshot 截图
 # ___________________________________________________________________
-bind = $MAIN_MOD, S, exec, hyprctl dispatch submap Screenshot && notify-send "Screenshot and record"
+bind = $MAIN_MOD, S, submap, Screenshot
 submap=Screenshot
   bind = , 1,   exec,                             grim -g "$(slurp -d)" - | wl-copy  && notify-send "选区截图发送至剪切板"    # ## 选区截图发送至剪切板
   bind = , 2,   exec, [noanim]                    grim -g "$(slurp -d)" - | swappy -f - && notify-send "选区截图"            # ## 选区截图
   bind = , 3,   exec, [float;noanim;toggleopaque] grim -g "$(hyprctl activewindow -j | gojq '.at[0]-20, $a, .at[1]-20, $b, .size[0]+40, $c, .size[1]+40' -j --arg a ',' --arg b ' ' --arg c 'x')" - | wl-copy && sleep 1.0 && notify-send "截取当前活动窗口发送至剪切板"  # ## 截取当前活动窗口发送至剪切板     (Send a screenshot of the currently active window to the clipboard)
   bind = , 4,   exec, [float;noanim;toggleopaque] grim -o "$(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r)" - | wl-copy && notify-send "截取当前显示器全屏并拷贝至剪切板"                                              # ## 截取当前显示器全屏并拷贝至剪切板 (take screenshot and send to clipboard)
   bind = , 5,   exec, [float;noanim;toggleopaque] grim -o "$(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r)" - | imv -f - & grim -g "$(sleep 0.5 && slurp -d)" - | swappy -f - & killall imv-wayland && notify-send "暂停截屏"           # ## 暂停屏幕（伪）截屏          (Pause screenshot)
-# flameshot
-  bind = , F,   exec, [float;noanim;toggleopaque] flameshot gui && notify-send "test flameshot"  && hyprctl dispatch submap reset
-# 脚本待移动到hypr_scripts_dir 通知需要重构 配合eww 显示状态
-  bind = , R,   exec, [float;noanim;toggleopaque] $LOCAL_BIN_DIR/record-script.sh & notify-send "wf-recorder 开始录制" && hyprctl dispatch submap reset
-  bind = , Q,   exec, /usr/bin/kill --signal SIGINT wf-recorder & notify-send "wf-recorder 停止录制" && hyprctl dispatch submap reset
-bind   = , S,   exec, hyprctl dispatch submap reset && notify-send "Exit" # ##
-bind  = , escape, exec, hyprctl dispatch submap reset && notify-send "Exit"   # ## use reset to go back to the global submap
+## 脚本待移动到hypr_scripts_dir 通知需要重构 配合eww 显示状态
+  bind = , R,   exec, [float;noanim;toggleopaque] $LOCAL_BIN_DIR/record-script.sh & notify-send "wf-recorder 开始录制" && $REST
+  bind = , Q,   execr, /usr/bin/kill --signal SIGINT wf-recorder & notify-send "wf-recorder 停止录制" && $REST
+## 退出一级 submap
+bind = , S,      submap, reset
+bind = , S,      execr,  pkill imv-wayland
+bind = , escape, submap, reset
+bind = , escape, execr,  pkill imv-wayland
 submap=reset
-
 ````
 
 ## Bars
-- EWW (支持tray)
+- waybar
+- EWW (不完善的Tray)
     - install: `yay -S eww-tray-wayland-git` , Arch Yes!
-- AGS
-    - install: `yay -S aylurs-gtk-shell sassc inotify-tools`
+
+- AGS (Tray)
+    - install: `yay -S aylurs-gtk-shell-git sassc inotify-tools`
 
 
 ## keybind 的主要思路
@@ -176,48 +178,47 @@ submap=reset
 - `Submap` 的嵌套
 ```
 # 进入 submap
-bind = x, x, exec, hyprctl dispatch submap Action
+bind = x, x, submap, Action
 submap=Action
     ...
     # 子项
-    bind = x, x, exec, hyprctl dispatch submap Action_2
+    bind = x, x, submap, Action_2
     submap=Action_2
 
         # 其他快捷键
         bind = x,x,xxx
 
         # 返回上一层的 Action submap
-        bind = x, x, exec, hyprctl dispatch submap Action
+        bind = x, x, submap, Action
         # 退出当前整个 submap
-        bind = x, x, exec, hyprctl dispatch submap reset
+        bind = x, x, submap, reset
 
     # 子项 2
-    bind = x, x, exec, hyprctl dispatch submap Action_3
+    bind = x, x, submap, Action_3
     submap=Action_3
 
         # 其他快捷键
         bind = x,x,xxx
 
         # 返回上一层的 Action submap
-        bind = x, x, exec, hyprctl dispatch submap Action
+        bind = x, x, submap, Action
         # 退出当前整个 submap
-        bind = x, x, exec, hyprctl dispatch submap reset
+        bind = x, x, submap, reset
             # 子项 2-1
-            bind = x, x, exec, hyprctl dispatch submap Action_2-1
+            bind = x, x, submap, Action_2-1
             submap=Action_2-1
 
                 # 其他快捷键
                 bind = x,x,xxx
 
                 # 返回上一层的 Action submap
-                bind = x, x, exec, hyprctl dispatch submap Action
+                bind = x, x, submap, Action
                 # 退出当前整个 submap
-                bind = x, x, exec, hyprctl dispatch submap reset
+                bind = x, x, submap, reset
 
 退出当前整个 submap
-bind = x, x, exec, hyprctl dispatch submap reset
+bind = x, x, submap, reset
 submap=reset
-
 ```
 
 
