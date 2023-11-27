@@ -27,48 +27,47 @@ $MAIN_SHIFT_MOD = $MAIN_MOD $SHIFT_MOD
 - `Submap` 的嵌套
 ```
 # 进入 submap
-bind = x, x, exec, hyprctl dispatch submap Action
+bind = x, x, submap, Action
 submap=Action
     ...
     # 子项
-    bind = x, x, exec, hyprctl dispatch submap Action_2
+    bind = x, x, submap, Action_2
     submap=Action_2
 
         # 其他快捷键
         bind = x,x,xxx
 
         # 返回上一层的 Action submap
-        bind = x, x, exec, hyprctl dispatch submap Action
+        bind = x, x, submap, Action
         # 退出当前整个 submap
-        bind = x, x, exec, hyprctl dispatch submap reset
+        bind = x, x, submap, reset
 
     # 子项 2
-    bind = x, x, exec, hyprctl dispatch submap Action_3
+    bind = x, x, submap, Action_3
     submap=Action_3
 
         # 其他快捷键
         bind = x,x,xxx
 
         # 返回上一层的 Action submap
-        bind = x, x, exec, hyprctl dispatch submap Action
+        bind = x, x, submap, Action
         # 退出当前整个 submap
-        bind = x, x, exec, hyprctl dispatch submap reset
+        bind = x, x, submap, reset
             # 子项 2-1
-            bind = x, x, exec, hyprctl dispatch submap Action_2-1
+            bind = x, x, submap, Action_2-1
             submap=Action_2-1
 
                 # 其他快捷键
                 bind = x,x,xxx
 
                 # 返回上一层的 Action submap
-                bind = x, x, exec, hyprctl dispatch submap Action
+                bind = x, x, submap, Action
                 # 退出当前整个 submap
-                bind = x, x, exec, hyprctl dispatch submap reset
+                bind = x, x, submap, reset
 
 退出当前整个 submap
-bind = x, x, exec, hyprctl dispatch submap reset
+bind = x, x, submap, reset
 submap=reset
-
 ```
 
 ## Submap Prefix: `<MAIN + W>`
@@ -246,11 +245,6 @@ submap=reset
     `3`                 : 截取当前活动窗口并发送至剪切板
     `4`                 : 截取当前显示器全屏并发送至剪切板
     `5`                 : 暂停屏幕并进行选区截图，支持多个屏幕
-```
-
-- flameshot
-```
-    `F`                 : flameshot gui (效果不好，待修复)
 ```
 
 - wf-recorder 录屏
