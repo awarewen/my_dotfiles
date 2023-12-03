@@ -67,7 +67,7 @@ function swww_option { # swww options tabel
   echo "${transition_args[@]}"
 }
 
-function sleep_wait { # 通过接受信号来停止切换和恢复切换
+function sleep_wait {
   while true; do
       ((TIMER++)) # Add TIMER
       if [ $TIMER -ge $TIMER_MAX ]; then

@@ -1,9 +1,154 @@
 #!/usr/bin/env bash
 
-grim -g "$(slurp)" - | wl-copy
+## Add to hyprland windowrule config
+# ===========================
+# windowrule = noanim , ^(imv|imv-wayland)$ # 无窗口动画
+# windowrule = float ,  ^(imv|imv-wayland)$ # 浮动窗口
+# windowrule = nofocus, ^(imv|imv-wayland)$ # 不聚焦
+# windowrule = opaque,  ^(imv|imv-wayland|com.gabm.satty|satty)$ # 不透明
+# windowrule = keepaspectratio, ^(com.gabm.satty|satty)$ # 强制窗口纵横比
 
-notify-send "选区截图发送至剪切板" && grim -g "$(slurp)" - | wl-copy     # ## 选区截图发送至剪切板
-notify-send "选区截图" && grim -g "$(slurp)" - | swappy -f -         # ## 选区截图
-notify-send "截取当前活动窗口发送至剪切板" && grim -g "$(hyprctl activewindow -j | jq '.at[0], $a, .at[1], $b, .size[0], $c, .size[1]' -j --arg a ',' --arg b ' ' --arg c 'x')" - | wl-copy # ## 截取当前显示器全屏并拷贝至剪切板
-notify-send "截取当前显示器全屏并拷贝至剪切板" && grim -o "$(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r)" - | wl-copy                                        # ## 截取当前显示器全屏并拷贝至剪切板
-notify-send "暂停截屏" && grim -o $(hyprctl monitors -j | jq '.[] | select(.focused == true) | .name' -r) - | imv -f - & grim -g "$(slurp)" - | swappy -f - && killall imv-wayland   # ## 暂停屏幕（伪）截屏
+# wayshot : wayshot -c -s "$slurp" --stdout | satty --filename -
+# 没有暂停抓取实现，功能与 grim 相似
+#_____________
+#   ❯ time wayshot -c -s "$(slurp)" --stdout | satty --filename -
+#   wayshot -c -s "$(slurp)" --stdout  0.55s user 0.04s system 8% cpu 7.240 total
+#   satty --filename -  0.40s user 0.07s system 4% cpu 11.263 total
+# =========================================================
+#❯ wayshot -h
+#wayshot 1.3.0
+#Shinyzenith <https://aakash.is-a.dev>
+#Screenshot tool for compositors implementing zwlr_screencopy_v1.
+#
+#USAGE:
+#    wayshot [OPTIONS]
+#
+#OPTIONS:
+#    -c, --cursor                        Enable cursor in screenshots
+#    -d, --debug                         Enable debug mode
+#    -e, --extension <FILE_EXTENSION>    Set image encoder (Png is default)
+#    -f, --file <FILE_PATH>              Mention a custom file path
+#    -h, --help                          Print help information
+#    -l, --listoutputs                   List all valid outputs
+#    -o, --output <OUTPUT>               Choose a particular display to screenshot
+#    -s, --slurp <GEOMETRY>              Choose a portion of your display to screenshot using slurp
+#        --stdout                        Output the image data to standard out
+#    -V, --version                       Print version information
+# =========================================================
+
+#  watershot :watershot --window-search "class=firefox" --copy -s | satty --filename -
+# =========================================================
+#  watershot -h
+#  @ 支持暂停 但是选择时不可见cursor?
+#_____________
+#Usage: watershot [OPTIONS] [COMMAND]
+#
+#Commands:
+#  path       The path to save the image to
+#  directory  The directory to save the image to with a generated name
+#  help       Print this message or the help of the given subcommand(s)
+#
+#Options:
+#  -c, --copy                           Copy the screenshot after exit
+#  -s, --stdout                         Output the screenshot into stdout in PNG format
+#  -g, --grim <GRIM>                    Path to the `grim` executable
+#      --window-search <WINDOW_SEARCH>  Pre-selects a window by its class, title or initial versions of the two. The value passed can be a regex. Examples: "class=Alacritty" , "title=.*Visual Studio Code.*"
+#      --window-under-cursor            Pre-selects the window under the mouse cursor
+#      --active-window                  Pre-selects the currently-focused window
+#      --auto-capture                   Automatically captures the pre-selected window, skipping interactive mode
+#  -h, --help                           Print help
+#  -V, --version                        Print version
+# =========================================================
+
+# grim , watershot, wayshot
+#screenshot_tool=grim
+#screenshot_tool="${screenshot_tool:-grim}"
+# 质量初始化
+quality=$2
+pause_quality=$3
+
+## 全屏暂停截图 简单对比
+# 1. 质量 grim_quality  6 | pause_grim_quality 6 , 分辨率4k  time:screenshot 1  4.53s user 2.55s system 109% cpu 6.462 total
+# 2. 质量 grim_quality  5 | pause_grim_quality 4 , 分辨率4k  time:screenshot 1  2.88s user 2.10s system 67% cpu 7.410 total
+
+# 窗口截屏时留的边距
+pos_lu=20 # lu: left up
+pos_rd=40 # rd: right down
+
+
+function creat_tmp_file {
+  [ -d ~/.cache/satty ] || command mkdir ~/.cache/satty
+  satty_tmp_file="$HOME/.cache/satty/satty_tmp.png"
+}
+
+function copy_tmp_file {
+  cat $satty_tmp_file | wl-copy # s_b linuxqq 大文件复制可能不正常，telegram正常，作为复制到剪切板的替代方案: 编辑完后使用Ctrl+s 保存文件后关闭 即可发送到剪切板
+}
+
+
+function focused_window {
+  grim -l $quality -g "$(hyprctl activewindow -j | gojq  -j '.at[0]-($gaps_lu | tonumber), ",", .at[1]-($gaps_lu | tonumber), " ", .size[0]+($gaps_rd | tonumber), "x", .size[1]+($gaps_rd | tonumber)' --arg gaps_lu $pos_lu --arg gaps_rd $pos_rd)" - \
+    | satty --filename - --output-filename $satty_tmp_file
+}
+
+function pause_focused_screen {
+  while true; do
+    if ! pgrep -f slurp > /dev/null; then # && ! pgrep -f grim > /dev/null
+       killall imv-wayland
+       break
+    fi
+  done &
+
+  grim -l $pause_quality -o $(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r) - | imv -f -
+}
+
+function take_fullscreen {
+
+  if $EDIT; then
+
+    grim -l $quality -g "$(slurp -b "#ef5b9c30" -d)" - \
+      | satty --filename - --output-filename $satty_tmp_file #| swappy -f - &
+
+  else
+    grim -l $quality -o "$(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r)" - \
+      | wl-copy
+  fi
+}
+
+function take_select_edit {
+  grim -l $quality -g "$(slurp -b "#ef5b9c30" -d)" - \
+    | satty --filename - --output-filename $satty_tmp_file
+}
+
+function take_select {
+  grim -l $quality -g "$(slurp -b "#ef5b9c30" -d)" - \
+    | wl-copy #satty --filename - --output-filename $satty_tmp_file
+}
+
+
+case $1 in
+  1 ) # 当前显示器全屏截图后编辑
+    # 截图后直接发送剪切板是否编辑
+    EDIT=true
+    creat_tmp_file
+    pause_focused_screen &
+    take_fullscreen
+    copy_tmp_file ;;
+
+  2 ) # 当前显示器全屏截图后直接发送剪切板
+    EDIT=false
+
+
+    take_fullscreen ;;
+
+  3 ) # 活动窗口截图后直接发送剪切板
+    creat_tmp_file
+    focused_window
+    copy_tmp_file ;;
+
+  4 ) # 选区截图后发送剪切板
+    creat_tmp_file
+    take_select
+    copy_tmp_file ;;
+esac
+

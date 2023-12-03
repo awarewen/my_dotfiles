@@ -78,7 +78,7 @@ File system  : btrfs
 
 # 可选的补充推荐软件列表
     - 文本编辑器            : neovim(CLI，截图中配置使用 [Evgeni Chasnovski dotfile](https://github.com/echasnovski/nvim) ), vscode(GUI)
-    - 音乐播放器            : go-musicfox(CLI,网易云第三方), music-you(网易云第三方), g4music(本地GUI播放器)
+    - 音乐播放器            : go-musicfox(CLI,网易云第三方), music-you(网易云第三方), g4music(本地GUI播放器), kew (cli 本地播放器)
     - 图片预览              : kitty(CLI,kitty +kitten ica), ranger(CLI, preview with kitty), vimiv(GUI, vim like keybind)
     - 视屏播放              : mpv(CLI,本地)
     - 手机投屏              : scpcrcpy-appimage
@@ -89,6 +89,7 @@ File system  : btrfs
     - 图片管理              : xnviewmp
     - logout                : wlogout
     - 颜色选取              : hyprpicker
+    - gtk-theme(2.0,3.0)    : nwg-look
 
 # 笔记本上可用的软件 (适配于GPD pocket 3)
     - 电源管理              : tlp

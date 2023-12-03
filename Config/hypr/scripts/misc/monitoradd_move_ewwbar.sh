@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # 双屏情况
 # 需求： 在插入屏幕时将eww 转移至新屏幕上，在移除屏幕时将eww 移回focused 屏幕
 ## 暂定 由于目前eww版本对于 wayland 下 的monitor 不支持变量
