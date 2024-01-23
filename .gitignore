@@ -33,7 +33,7 @@ Config/ranger/plugins/ranger_devicons
 Home/.gitconfig
 Home/.histfile
 Home/.ssh
-Home/Picture/mypictures
+#Home/Picture/mypictures
 Home/Documents
 Home/Picture/Screenshots/bspwm
 Home/Picture/Screenshots/KDE
