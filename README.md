@@ -143,7 +143,7 @@ exec-once = wl-clip-persist --clipboard both              # Use Regular and Prim
 
 ## Screenshots (截屏)
 - ~Flameshot 不再使用，且也没其他截屏软件可代替的情况下，由于"grim+slurp"无法暂停屏幕截屏~，即采用以下曲线救国的方案。(感谢群友"[maya](https://mayapony.site/)"以及其他群佬提供方案)
-基于这个想法目前已经可以截取当前活动窗口的截图
+ 一、基于这个想法目前已经可以截取当前活动窗口的截图
 ````
 # Screenshot 截图
 # ___________________________________________________________________
@@ -162,6 +162,22 @@ bind = , S,      submap, reset
 bind = , S,      execr,  pkill imv-wayland
 bind = , escape, submap, reset
 bind = , escape, execr,  pkill imv-wayland
+submap=reset
+````
+
+二、脚本化
+
+````
+# Screenshot 截图
+bind = $MAIN_MOD, S, submap, Screenshot
+submap=Screenshot
+bind = , 1, execr, $HYPR_SCRIPTS_DIR/screenshot 1 5 2 && $RESET_MAP # 选区截屏后编辑
+bind = , 2, execr, $HYPR_SCRIPTS_DIR/screenshot 2 3 2 && $RESET_MAP # 全屏截图
+bind = , 3, execr, $HYPR_SCRIPTS_DIR/screenshot 3 5 2 && $RESET_MAP # 活动窗口截图
+bind = , 4, execr, $HYPR_SCRIPTS_DIR/screenshot 4 5 1 && $RESET_MAP # 选区截屏后发送剪切板
+# 退出一级 submap
+bind = , S,      submap, reset
+bind = , escape, submap, reset
 submap=reset
 ````
 
