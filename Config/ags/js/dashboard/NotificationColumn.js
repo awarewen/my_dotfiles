@@ -2,16 +2,20 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
 import icons from '../icons.js';
 import Notification from '../misc/Notification.js';
+import { timeout } from 'resource:///com/github/Aylur/ags/utils.js';
 
 const ClearButton = () => Widget.Button({
-    on_clicked: () => Notifications.clear(),
-    binds: [['sensitive', Notifications, 'notifications', n => n.length > 0]],
+    on_clicked: () => {
+        const list = Array.from(Notifications.notifications);
+        for (let i = 0; i < list.length; i++)
+            timeout(50 * i, () => list[i]?.close());
+    },
+    sensitive: Notifications.bind('notifications').transform(n => n.length > 0),
     child: Widget.Box({
         children: [
             Widget.Label('Clear '),
             Widget.Icon({
-                binds: [['icon', Notifications, 'notifications', n =>
-                    n.length > 0 ? icons.trash.full : icons.trash.empty]],
+                icon: Notifications.bind('notifications').transform(n => icons.trash[n.length > 0 ? 'full' : 'empty']),
             }),
         ],
     }),
@@ -28,12 +32,8 @@ const Header = () => Widget.Box({
 const NotificationList = () => Widget.Box({
     vertical: true,
     vexpand: true,
-    connections: [[Notifications, box => {
-        box.children = Notifications.notifications
-            .reverse().map(Notification);
-
-        box.visible = Notifications.notifications.length > 0;
-    }]],
+    children: Notifications.bind('notifications').transform(n => n.reverse().map(Notification)),
+    visible: Notifications.bind('notifications').transform(n => n.length > 0),
 });
 
 const Placeholder = () => Widget.Box({
@@ -43,11 +43,11 @@ const Placeholder = () => Widget.Box({
     hpack: 'center',
     vexpand: true,
     hexpand: true,
+    visible: Notifications.bind('notifications').transform(n => n.length === 0),
     children: [
         Widget.Icon(icons.notifications.silent),
         Widget.Label('Your inbox is empty'),
     ],
-    binds: [['visible', Notifications, 'notifications', n => n.length === 0]],
 });
 
 export default () => Widget.Box({

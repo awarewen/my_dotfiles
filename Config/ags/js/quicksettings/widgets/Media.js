@@ -6,31 +6,29 @@ import options from '../../options.js';
 /** @param {import('types/service/mpris').MprisPlayer} player */
 const Footer = player => Widget.CenterBox({
     class_name: 'footer-box',
-    children: [
-        Widget.Box({
-            class_name: 'position',
-            children: [
-                mpris.PositionLabel(player),
-                mpris.Slash(player),
-                mpris.LengthLabel(player),
-            ],
-        }),
-        Widget.Box({
-            class_name: 'controls',
-            children: [
-                mpris.ShuffleButton(player),
-                mpris.PreviousButton(player),
-                mpris.PlayPauseButton(player),
-                mpris.NextButton(player),
-                mpris.LoopButton(player),
-            ],
-        }),
-        mpris.PlayerIcon(player, {
-            symbolic: false,
-            hexpand: true,
-            hpack: 'end',
-        }),
-    ],
+    start_widget: Widget.Box({
+        class_name: 'position',
+        children: [
+            mpris.PositionLabel(player),
+            mpris.Slash(player),
+            mpris.LengthLabel(player),
+        ],
+    }),
+    center_widget: Widget.Box({
+        class_name: 'controls',
+        children: [
+            mpris.ShuffleButton(player),
+            mpris.PreviousButton(player),
+            mpris.PlayPauseButton(player),
+            mpris.NextButton(player),
+            mpris.LoopButton(player),
+        ],
+    }),
+    end_widget: mpris.PlayerIcon(player, {
+        symbolic: false,
+        hexpand: true,
+        hpack: 'end',
+    }),
 });
 
 /** @param {import('types/service/mpris').MprisPlayer} player */
@@ -39,10 +37,6 @@ const TextBox = player => Widget.Box({
         mpris.CoverArt(player, {
             hpack: 'end',
             hexpand: false,
-            child: Widget.Box({
-                class_name: 'shader',
-                hexpand: true,
-            }),
         }),
         Widget.Box({
             hexpand: true,
@@ -68,10 +62,8 @@ const TextBox = player => Widget.Box({
 const PlayerBox = player => Widget.Box({
     class_name: `player ${player.name}`,
     child: mpris.BlurredCoverArt(player, {
-        class_name: 'cover-art-bg',
         hexpand: true,
         child: Widget.Box({
-            class_name: 'shader',
             hexpand: true,
             vertical: true,
             children: [
@@ -86,12 +78,8 @@ const PlayerBox = player => Widget.Box({
 export default () => Widget.Box({
     vertical: true,
     class_name: 'media vertical',
-    connections: [['draw', self => {
-        self.visible = Mpris.players.length > 0;
-    }]],
-    binds: [
-        ['children', Mpris, 'players', ps =>
-            ps.filter(p => !options.mpris.black_list.value
-                .includes(p.identity)).map(PlayerBox)],
-    ],
+    visible: Mpris.bind('players').transform(p => p.length > 0),
+    children: Mpris.bind('players').transform(ps => ps
+        .filter(p => !options.mpris.black_list.value
+            .includes(p.identity)).map(PlayerBox)),
 });

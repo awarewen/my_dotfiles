@@ -110,10 +110,15 @@ export default {
             'title': 'Border Opacity',
             'unit': '',
         }),
-        width: Option(1, {
+        hyprland_width: Option(1, {
             'category': 'Border',
-            'title': 'Border Width',
+            'title': 'Hyprland Border Width',
         }),
+        ags_width: Option(1, {
+            'category': 'Border',
+            'title': 'Ags Border Width',
+        }),
+
     },
 
     hypr: {
@@ -139,7 +144,7 @@ export default {
     }),
 
     font: {
-        font: Option('Ubuntu Nerd Font', {
+        font: Option('HYLeMiaoTiJ Regular', { // Ubuntu Nerd Font
             'type': 'font',
             'title': 'Font',
             'scss': 'font',
@@ -157,7 +162,6 @@ export default {
     applauncher: {
         width: Option(500),
         height: Option(500),
-        anchor: Option(['top']),
         icon_size: Option(52),
     },
 
@@ -184,10 +188,8 @@ export default {
             'category': 'exclude',
         }),
         bar: {
-            show_icon: Option(true, { 'category': 'Bar' }),
             width: Option(70, { 'category': 'Bar' }),
             height: Option(14, { 'category': 'Bar' }),
-            full: Option(false, { 'category': 'Bar' }),
         },
         low: Option(30, { 'category': 'Bar' }),
         medium: Option(50, { 'category': 'Bar' }),
@@ -236,7 +238,7 @@ export default {
 
     notifications: {
         black_list: Option(['Spotify'], { 'note': 'app-name | entry' }),
-        position: Option(['top', 'right'], { 'note': 'anchor' }),
+        position: Option(['top'], { 'note': 'anchor' }),
         width: Option(450),
     },
 
@@ -293,3 +295,4 @@ export default {
         ],
     },
 };
+

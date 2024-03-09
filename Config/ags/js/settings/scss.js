@@ -1,6 +1,7 @@
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import { getOptions } from './option.js';
+import { dependencies } from '../utils.js';
 
 export function scssWatcher() {
     return Utils.subprocess(
@@ -23,8 +24,8 @@ export function scssWatcher() {
  * options.bar.style.value => $bar-style
  */
 export async function reloadScss() {
-    if (!Utils.exec('which sassc'))
-        return print('missing dependancy: sassc');
+    if (!dependencies(['sassc']))
+        return;
 
     const opts = getOptions();
     const vars = opts.map(opt => {
@@ -40,11 +41,6 @@ export async function reloadScss() {
     const additional = bar_style === 'normal' ? '//' : `
         window#quicksettings .window-content {
             margin-right: $wm-gaps;
-        }
-
-        window#quicksettings .window-content,
-        window#dashboard .window-content {
-            margin-top: 0;
         }
     `;
 
