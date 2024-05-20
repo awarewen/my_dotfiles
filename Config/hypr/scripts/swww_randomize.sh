@@ -5,6 +5,8 @@
 #
 # NOTE: this script is in bash (not posix shell), because the RANDOM variable
 # we use is not defined in posix
+# Options:
+# -m : manual switch wallpaper [ swww_randomize.sh -m /path/to/file ]
 
 ## Script setup
 # ====================================
@@ -51,7 +53,7 @@ function pid_create { # 创建脚本标识
 function swww_option { # swww options tabel
    local transition_args=(
 #     "--outputs"             "$OUTPUT"
-#     "--no-resize"           "no"
+#     "--no-resize"            ""
       "--resize"              "$IMG_RESIZE"
 #     "--fill-color"          "$FULL_COLOR"
       "--filter"              "$FILTER"
@@ -170,4 +172,5 @@ esac
 # swww img "$img" --outputs $MONITOR \
 
 # 添加功能在全屏应用启动后禁止切换壁纸
-# socat - "UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+# socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock
+

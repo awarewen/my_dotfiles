@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+## Add to hyprland windowrule config
+# ===========================
+# windowrule = noanim , ^(imv|imv-wayland)$ # 无窗口动画
+# windowrule = float ,  ^(imv|imv-wayland)$ # 浮动窗口
+# windowrule = nofocus, ^(imv|imv-wayland)$ # 不聚焦
+# windowrule = opaque,  ^(imv|imv-wayland|com.gabm.satty|satty)$ # 不透明
+# windowrule = keepaspectratio, ^(com.gabm.satty|satty)$ # 强制窗口纵横比
+
+# Default init
+
+# 活动窗口偏移
+pos_lu=20
+pos_rd=40
