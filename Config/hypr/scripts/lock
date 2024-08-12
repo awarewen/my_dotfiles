@@ -28,6 +28,3 @@
 ## Dpms ctl ( 2 s )
 swayidle -w \
   timeout 2 'if pgrep -x swaylock; then hyprctl dispatch dpms off; else  killall swayidle; fi'
-
-
-# dunst && dunstctl set-paused true; dunstctl set-paused false &&
