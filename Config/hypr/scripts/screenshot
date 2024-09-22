@@ -62,7 +62,6 @@ function take_select {
 
 case $1 in
   1 ) # 选区截图后发送剪切板
-    # 截图后直接发送剪切板是否编辑
     take_select
     ;;
 
@@ -82,5 +81,11 @@ case $1 in
     grim -l 1 -o $(hyprctl monitors -j | gojq '.[] | select(.focused == true) | .name' -r) - \
       | satty -f - --fullscreen --init-tool crop --copy-command wl-copy --early-exit
     ;;
+#  5 ) # 根据选区录屏
+#    ;;
+#  6 ) # 当前屏幕录屏
+#    ;;
+#  7 ）# 所有屏幕录屏
+#    ;;
 esac
 

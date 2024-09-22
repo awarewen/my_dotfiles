@@ -33,6 +33,7 @@
 
 # 说明
 **仓库文件结构**
+> 
 ````
     - `Config`           : `$HOME/.config/` 下的配置文件
     - `HOME`             : `$HOME/` 下的文件
@@ -40,7 +41,15 @@
     - `keybind.md`       : 配置中除去某些软件中一些默认的快捷键外，所有相关的快捷键请查看 `keybind.md` 文件
 ````
 
-> **重要**  此配置触控功能为 [GPD Pocket 3](http://www.softwincn.com/gpdpocket3) 或类似触屏便携设备适配，其他不具备触控设备可按需要对某些冗余配置进行删减或更改
+> **重要**  
+此配置触控功能为 [GPD Pocket 3](http://www.softwincn.com/gpdpocket3) 或类似触屏便携设备适配，其他不具备触控设备可按需要对某些冗余配置进行删减或更改
+上述的截图中所使用的几种 "Bar" 仅作推荐列表，"Bar" 所使用的配置在此列出:
+
+EWW:
+     https://github.com/end-4/dots-hyprland
+Waybar:
+
+Ags:
 
 
 ## 系统信息预览
@@ -90,6 +99,7 @@ File system  : btrfs
     - logout                : wlogout
     - 颜色选取              : hyprpicker
     - gtk-theme(2.0,3.0)    : nwg-look
+    - 屏幕虚拟键盘          : wvkbd (cli command: wvkbd-mobintl -L 300)
 
 # 笔记本上可用的软件 (适配于GPD pocket 3)
     - 电源管理              : tlp
