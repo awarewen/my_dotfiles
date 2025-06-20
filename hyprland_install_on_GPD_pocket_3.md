@@ -161,12 +161,12 @@ echo xxx > /etc/hostname
 passwd root
 
 - 创建新用户并添加到 wheel 用户组
-useradd -m -G wheel -s /bin/bash user
+useradd -m -G wheel -s /bin/bash new_user_name
 
 - 设置密码
-passwd 'the_user_name'
+passwd 'new_user_name'
 
-- 为 wheel 用户组更改用户权限
+- 为 'new_user_name' 普通用户添加权限
     EDIOR=vim visudo
     - 找到 'Uncomment to allow members of group wheel to execute any command' 将下一行配置取消注释
 
@@ -244,7 +244,7 @@ paru -S wlr-randr
 ## Dotfiles install
 https://github.com/flick0/dotfiles/tree/dreamy
 
-paru -S hyprland-git waybar-hyprland-git cava waybar-mpris-git python rustup kitty fish wofi xdg-desktop-portal-hyprland-git tty-clock-git swaylockd grim slurp pokemon-colorscripts-git starship jq dunst wl-clipboard swaylock-effects-git swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light blueman network-manager-applet g4music btop polkit-kde-agent
+paru -S hyprland-meta-git waybar-hyprland-git cava waybar-mpris-git python rustup kitty fish wofi xdg-desktop-portal-hyprland-git tty-clock-git swaylockd grim slurp pokemon-colorscripts-git starship jq dunst wl-clipboard swaylock-effects-git swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light blueman network-manager-applet g4music btop hyprpolkitagent-git polkit-kde-agent
 ```
 git clone -b dreamy https://github.com/flick0/dotfiles
 cd dotfiles
@@ -351,6 +351,14 @@ light
 ````
 
 ## polkit
+优先使用 hyprpolkitagent-git
+````
+yay -S hyprpolkitagent-git
+
+nvim ~/.config/hypr/exec-one.cfg
+------------------------
+exec-once = systemctl --user start hyprpolkitagent
+````
 ````
 - 使用 polkit-kde-agent
 yay -S polkit-kde-agent
@@ -435,7 +443,7 @@ DHMI-A-1 : 3840x2180@60Hz
 
 -- Pos
 
-## Problem :Doesn't work
+## Problem :Doesn't work (Fxded )
 - Up screen after dpms turn off the screen with mouse
     create a scripts for lock screen
 ````

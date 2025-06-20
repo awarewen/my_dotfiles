@@ -199,6 +199,9 @@ submap=reset
 - AGS (Tray)
     - install: `yay -S aylurs-gtk-shell-git sassc inotify-tools`
 
+- quickshell
+    - install: `yay -S quickshell-git`
+
 
 ## keybind 的主要思路
 为了避免占用其他的功能键 `ctrl, alt` 导致快捷键冲突，将不同的桌面操作的快捷键分成多个 `submap`，更好的统一快捷键减少记忆的负担和使用成本
@@ -251,6 +254,7 @@ submap=reset
 
 ## 2023/10/21 修复
 目前先将 end-4/dots-hyprland 中所有功能恢复正常工作，再开始修改以及添加新功能
+
 
 ## 感谢，本配置参考以下 RICE，它们都各具特点
 
