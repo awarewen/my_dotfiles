@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# 用于获取模拟 window 鼠标加速的<step><points> 的值
-
 # original at https://gist.github.com/yinonburgansky/7be4d0489a0df8c06a923240b8eb0191
 # modified for ease of use in Hyprland
 
@@ -9,17 +7,19 @@
 # assuming windows 10 uses the same calculation as windows 7.
 # guesses have been made calculation is not accurate
 # touchpad users make sure your touchpad is calibrated with `sudo libinput measure touchpad-size`
+
 # import matplotlib.pyplot as plt
 import struct
 import os
 import sys
 
+# ===== PARAMETERS =====
 # set according to your device:
 device_dpi = 1000 # mouse dpi
 screen_dpi = 96
 screen_scaling_factor = 1
 sample_point_count = 20 # should be enough but you can try to increase for accuracy of windows function
-sensitivity_factor = 1
+sensitivity_factor = 6
 # sensitivity factor translation table: (windows slider notches)
 # 1 = 0.1
 # 2 = 0.2
@@ -32,8 +32,9 @@ sensitivity_factor = 1
 # 9 = 1.6
 # 10 = 1.8
 # 11 = 2.0
+# ===== END PARAMETERS =====
 
-def findArg(arg):
+def find_arg(arg):
     for i in sys.argv:
         if i == arg:
             return True
@@ -41,9 +42,9 @@ def findArg(arg):
     return False
 
 
-if findArg("help") or findArg("-h") or findArg("--help"):
-    print(f'{sys.argv[0]} [[accel_device] [scroll_points] device=<device>]')
-    print('To get the device, run `hyprctl devices`')
+if find_arg("help") or find_arg("-h") or find_arg("--help") or find_arg("h"):
+    print(f'{sys.argv[0]} [[accel_profile] [scroll_points] device=<device>]')
+    print('To get the device, run `hyprctl devices` and get its name')
     exit(0)
 
 # TODO: find accurate formulas for scale x and scale y
@@ -52,7 +53,7 @@ scale_x = device_dpi / 1e3
 # pointer speed: inch/s to screen pixels/millisecond
 scale_y =  screen_dpi / 1e3 / screen_scaling_factor * sensitivity_factor
 
-print(f'scale_x={scale_x}, scale_y={scale_y}')
+# print(f'scale_x={scale_x}, scale_y={scale_y}')
 
 
 def float16x16(num):
@@ -77,17 +78,16 @@ b'\x00\xc0\xbb\x01\x00\x00\x00\x00',
 ]
 
 windows_points = [[float16x16(x), float16x16(y)] for x,y in zip(X,Y)]
-
-print('Windows original points:')
-for point in windows_points:
-    print(point)
-
 # scale windows points according to device config
 points = [[x * scale_x, y * scale_y] for x, y in windows_points]
 
-print('Windows scaled points')
-for point in points:
-    print(point)
+# print('Windows original points:')
+# for point in windows_points:
+#     print(point)
+
+# print('Windows scaled points')
+# for point in points:
+#     print(point)
 
 
 # plt.plot(*list(zip(*windows_points)), label=f'windows points')
@@ -98,7 +98,7 @@ for point in points:
 # plt.show()
 # exit()
 
-def getDevice():
+def get_device():
     for i in sys.argv:
         if str(i).startswith('device='):
             print(str(i)[7::])
@@ -144,12 +144,17 @@ sample_points_str = " ".join(["%.3f" % number for number in sample_points_y])
 print(f'\tPoints: {sample_points_str}')
 print(f'\tStep size: {step:0.10f}')
 
-if (findArg("accel_profile")):
-    device = getDevice()
-    print(f'Setting device:\'{device}\':accel_profile using hyprctl')
-    os.system(f'hyprctl keyword device:\'{device}\':accel_profile \'custom {step} {sample_points_str}\'')
+def hyprctl(device, option, arg):
+    os.system(f"hyprctl keyword 'device[{device}]:{option}' '{arg}'")
 
-if (findArg("scroll_points")):
-    device = getDevice()
+if find_arg("accel_profile"):
+    device = get_device()
+    print(f'Setting device:\'{device}\':accel_profile using hyprctl')
+    hyprctl(device, 'accel_profile', f'custom {step} {sample_points_str}')
+    # os.system(f'hyprctl keyword device:\'{device}\':accel_profile \'custom {step} {sample_points_str}\'')
+
+if find_arg("scroll_points"):
+    device = get_device()
     print(f'Setting device:\'{device}\':scroll_points using hyprctl')
-    os.system(f'hyprctl keyword device:\'{device}\':scroll_points \'{step} {sample_points_str}\'')
+    hyprctl(device, 'scroll_points', f'{step} {sample_points_str}')
+    # os.system(f'hyprctl keyword device:\'{device}\':scroll_points \'{step} {sample_points_str}\'')

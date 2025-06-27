@@ -1,0 +1,13 @@
+[Unit]
+Description=Update geosite geoip timer
+
+[Timer]
+OnCalendar=*-*-* 06:00:00
+; OnCalendar=Tue, Thu, Sat
+OnActiveSec=15
+; RandomizedDelaySec=60
+; Persistent=true
+AccuracySec=24h
+
+[Install]
+WantedBy=timers.target
