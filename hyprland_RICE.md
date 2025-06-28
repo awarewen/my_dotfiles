@@ -249,6 +249,14 @@ swayidle -w \
 
 ````
 
+## 2025-06-28 锁屏程序替换
+````
+yay -R gtklock swaylock-effects-git
+yay -S hyprlock
+````
+hyprlock 不会自动创建配置 示例配置：[hyprlock](https://github.com/hyprwm/hyprlock/blob/main/assets/example.conf)
+`~/.config/hypr/hyprlock.conf`
+
 ## 壁纸切换
 - 自动切换壁纸
 在swww的示例配置中的自动换壁纸脚本
