@@ -3,9 +3,11 @@
 - OS: Archlinux
 
 ## 依赖软件列表
-- waybar-hyprland-git waybar-mpris-git starship fish (剔出)
+
 ```
-paru -S hyprland-git  cava  python rustup kitty wofi xdg-desktop-portal-hyprland-git tty-clock-git swaylockd swaylock-effects-git swayidle grim slurp swappy jq dunst wl-clipboard cliphist wl-clip-persist swww-git zsh tmux ranger sddm-git qt5-base qt5-wayland qt6-base qt6-wayland light g4music btop
+# install hyprland
+paru -S hyprland-meta-git  xdg-desktop-portal xdg-desktop-portal-gtk kitty
+paru -S  cava  python rustup  rofi  grim slurp swappy jq dunst wl-clipboard cliphist wl-clip-persist swww-git zsh tmux ranger  qt5-base qt5-wayland qt6-base qt6-wayland light btop
 ```
 - 重写 hyprland 配置
 hyprctl clients : list of windows message
@@ -256,6 +258,12 @@ yay -S hyprlock
 ````
 hyprlock 不会自动创建配置 示例配置：[hyprlock](https://github.com/hyprwm/hyprlock/blob/main/assets/example.conf)
 `~/.config/hypr/hyprlock.conf`
+
+## 2025-06-28 swayidle 替换
+````
+yay -R swayidle
+````
+
 
 ## 壁纸切换
 - 自动切换壁纸
@@ -528,10 +536,13 @@ cava                : 音频可视化
 lexend-fonts-git    : font
 geticons            : icon获取，一个 cli 实用程序，用于按名称获取系统上应用程序的图标或其他通用图标。
 gojq                : jq 的全go实现 [jq]
+_________________
 gtklock             : lock screen
 gtklock-playerctl-module : 锁屏页面显示信息
 gtklock-powerbar-module  : module
 gtklock-userinfo-module  : module
+_________________
+hyprlock                 : hyprland 锁屏
 hyprland-git             : hyprland
 python-material-color-utilities : 用于材质颜色的材质-颜色-实用程序的 Python 端口
 swww                     : 壁纸

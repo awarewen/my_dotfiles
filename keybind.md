@@ -224,8 +224,6 @@ submap=reset
 
 - `CLI program`
 ```
-    `CTRL + 1`          : Cava
-    `CTRL + 2`          : tty-clock
     `CTRL + 3`          : alsamixer
     `CTRL + 4`          : thunar
 ```
