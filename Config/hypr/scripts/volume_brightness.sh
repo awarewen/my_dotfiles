@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Script Form: https://gitlab.com/Nmoleo/i3-volume-brightness-indicator/-/blob/main/volume_brightness.sh?ref_type=heads
 
+# # https://github.com/lilydjwg/monitor-control 用于外部显示器亮度调节
+# 需要加载内核模块 sudo modprobe i2c-dev
+# ❮ ./monitor-control HDMI-A-1 16 100
+
+
 # See README.md for usage instructions
 volume_step=1
 brightness_step=1
