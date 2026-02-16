@@ -1,1 +1,0 @@
-{"timestamp":1753890262171,"paths":["./scheme_for_image.py","./generate_colors_material.py","./applycolor.sh","./random_konachan_wall.sh","./terminal/sequences.txt","./terminal/scheme-base.json"]}

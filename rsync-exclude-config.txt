@@ -10,6 +10,8 @@ music-you/
 cef_user_data/
 obsidian/
 github-copilot/
+Cursor/
+opencode/
 
 # ---------- 缓存与运行时 ----------
 *Cache*/
