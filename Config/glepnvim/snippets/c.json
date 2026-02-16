@@ -1,0 +1,135 @@
+{
+	"for": {
+		"prefix": "for",
+		"body": [
+			"for (int ${1:i} = ${2:0}; ${1:i} < ${3:n}; ${1:i}++) {",
+			"\t$0",
+			"}"
+		],
+		"description": "Code snippet for 'for' loop"
+	},
+	"forr": {
+		"prefix": "forr",
+		"body": [
+			"for (int ${1:i} = ${2:length} - 1; ${1:i} >= ${3:0}; ${1:i}--) {",
+			"\t$0",
+			"}"
+		],
+		"description": "Code snippet for reverse 'for' loop"
+	},
+	"while": {
+		"prefix": "while",
+		"body": [
+			"while (${1:condition}) {",
+			"\t$0",
+			"}"
+		],
+		"description": "Code snippet for while loop"
+	},
+	"if": {
+		"prefix": "if",
+		"body": [
+			"if (${1:condition}) {",
+			"\t$0",
+			"}"
+		],
+		"description": "Code snippet for if statement"
+	},
+	"else": {
+		"prefix": "else",
+		"body": [
+			"else {",
+			"\t$0",
+			"}"
+		],
+		"description": "Code snippet for else statement"
+	},
+	"enum": {
+		"prefix": "enum",
+		"body": [
+			"enum ${1:MyEnum} {",
+			"\t$0",
+			"};"
+		],
+		"description": "Code snippet for enum"
+	},
+	"#ifdef": {
+		"prefix": "#ifdef",
+		"body": [
+			"#ifdef ${1:DEBUG}",
+			"$0",
+			"#endif // ${1:DEBUG}"
+		],
+		"description": "Code snippet for #ifdef"
+	},
+	"#ifndef": {
+		"prefix": "#ifndef",
+		"body": [
+			"#ifndef ${1:HEADER_H}",
+			"$0",
+			"#endif // !${1:HEADER_H}"
+		],
+		"description": "Code snippet for #ifndef"
+	},
+	"#if": {
+		"prefix": "#if",
+		"body": [
+			"#if ${1:0}",
+			"$0",
+			"#endif // ${1:0}"
+		],
+		"description": "Code snippet for #if"
+	},
+	"struct": {
+		"prefix": "struct",
+		"body": [
+			"struct ${1:MyStruct} {",
+			"\t$0",
+			"};"
+		],
+		"description": "Code snippet for struct"
+	},
+	"switch": {
+		"prefix": "switch",
+		"body": [
+			"switch (${1:expression}) {",
+			"case ${2:value}:",
+			"\t$0",
+			"\tbreak;",
+			"default:",
+			"\tbreak;",
+			"}"
+		],
+		"description": "Code snippet for switch statement"
+	},
+	"union": {
+		"prefix": "union",
+		"body": [
+			"union ${1:MyUnion} {",
+			"\t$0",
+			"};"
+		],
+		"description": "Code snippet for union"
+	},
+	"#inc": {
+		"prefix": "#inc",
+		"body": [
+			"#include \"${1:header.h}\""
+		],
+		"description": "Code snippet for #include with quotes"
+	},
+	"#inc<": {
+		"prefix": "#inc<",
+		"body": [
+			"#include <${1:stdio.h}>"
+		],
+		"description": "Code snippet for #include with angle brackets"
+	},
+	"#def": {
+		"prefix": "#def",
+		"body": [
+			"#define ${1:MACRO} ${2:value}"
+		],
+		"description": "Code snippet for #define"
+	}
+}

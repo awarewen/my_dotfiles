@@ -1,0 +1,18 @@
+{
+  "accounts": {
+    "2541087242_eLiMWB@kindle.cn": [
+      "EPUB, TPZ",
+      true,
+      true
+    ]
+  },
+  "aliases": {},
+  "encryption": "TLS",
+  "from_": "blacktonewascrazy@Gmail.com",
+  "relay_host": null,
+  "relay_password": "",
+  "relay_port": 25,
+  "relay_username": null,
+  "subjects": {},
+  "tags": {}
+}

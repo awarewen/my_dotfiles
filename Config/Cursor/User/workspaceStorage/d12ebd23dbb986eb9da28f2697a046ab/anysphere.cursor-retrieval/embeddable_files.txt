@@ -1,0 +1,9 @@
+switchwall.sh
+scheme_for_image.py
+generate_colors_material.py
+applycolor.sh
+code/material-code-set-color.sh
+random/random_osu_wall.sh
+random/random_konachan_wall.sh
+terminal/sequences.txt
+terminal/scheme-base.json

@@ -1,1 +1,0 @@
-alias p="${PAGER}"

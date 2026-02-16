@@ -134,3 +134,30 @@ class fzf_select(Command):
                self.fm.cd(selected)
            else:
                self.fm.select_file(selected) 
+
+class mpv_paly(Command):
+    """:mpv <filename>
+
+    mpv palyer
+    """
+    def execute(self):
+        if self.arg(1):
+            target_filename = self.rest(1)
+        else:
+            # self.fm is a ranger.core.filemanager.FileManager object and gives
+            # you access to internals of ranger.
+            # self.fm.thisfile is a ranger.container.file.File object and is a
+            # reference to the currently selected file.
+            target_filename = self.fm.thisfile.path
+        self.fm.notify("mpv paly :" + target_filename)
+        if not os.path.exists(target_filename):
+            self.fm.notify("The given file does not exist!", bad=True)
+            return
+        # Check out the source, or run "pydoc ranger.core.actions" for a list.
+        #self.fm.edit_file(target_filename) ## 使用内置的函数只能打开无配置的neovim
+        self.fm.run('mpv ' + target_filename)  # 可以打开有插件配置的neovim
+
+    # tabnum is 1 for <TAB> and -1 for <S-TAB> by default
+    def tab(self, tabnum):
+        return self._tab_directory_content()
+

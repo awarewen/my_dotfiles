@@ -1,0 +1,15 @@
+#  ~/.zshenv - XDG Base Directory Settings
+#
+#  .zshenv: 只放必须在所有 Zsh 实例（包括脚本执行）中生效的基础环境变量
+#  主要是 PATH, EDITOR, LANG, PAGER, ZDOTDIR, XDG_* 以及关键应用所需的核心变量如 JAVA_HOME
+#
+#  2025-06-28
+##
+
+export XDG_CONFIG_HOME="${HOME}/.config"       # 用户专属配置
+export XDG_CACHE_HOME="${HOME}/.cache"         # 用户专属缓存
+export XDG_DATA_HOME="${HOME}/.local/share"    # 用户专属数据文件
+export XDG_STATE_HOME="${HOME}/.local/state"   # 用户专属状态数据
+
+export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_CONFIG_DIRS="/etc/xdg"

@@ -1,0 +1,38 @@
+# rsync 排除列表：~/.config/ → ~/Documents/my_dotfiles/Config/
+# 用法：rsync --exclude-from=本文件 ... ~/.config/ 目标/
+# 详见仓库 CHANGELOG/CHANGELOG_backup_2026-02-16.md
+
+# ---------- 大体积 / 应用数据 ----------
+QQ/
+discord/
+chromium/
+music-you/
+cef_user_data/
+obsidian/
+github-copilot/
+
+# ---------- 缓存与运行时 ----------
+*Cache*/
+*GPUCache*/
+*Code Cache*/
+*Session Storage/
+*Local Storage/
+*leveldb/
+*logs/
+*watch_later/
+*cached*
+*Cache/
+*CachedData/
+*CachedExtensions/
+*CachedExtensionVSIXs/
+*CachedProfiles/
+*Code Cache/
+
+# ---------- 依赖与可重建 ----------
+node_modules/
+.git/
+*.lock
+
+# ---------- 会话 / 临时 ----------
+ibus/bus/
+session/

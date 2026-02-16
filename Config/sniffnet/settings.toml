@@ -1,0 +1,25 @@
+color_gradient = "None"
+language = "EN"
+scale_factor = 1.0
+mmdb_country = ""
+mmdb_asn = ""
+style_path = ""
+
+[notifications]
+volume = 60
+
+[notifications.data_notification]
+chart_type = "Bytes"
+byte_multiple = "KB"
+sound = "Pop"
+previous_threshold = 800000
+
+[notifications.favorite_notification]
+notify_on_favorite = false
+sound = "Swhoosh"
+
+[style]
+style = "Custom"
+
+[style.name]
+custom = "A11yDark"

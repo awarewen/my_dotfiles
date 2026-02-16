@@ -1,0 +1,389 @@
+# put to /etc/dae/config.dae
+global {
+    # tproxy监听端口
+    tproxy_port: 12345
+
+    # 设置为true开启可保护tproxy端口不受未经请求的流量的影响
+    tproxy_port_protect: true
+
+    # so_mark标记网络数据包，如果不为零，则从 dae 发送的流量将被设置为 SO_MARK
+    so_mark_from_dae: 0
+
+    # 日志级别: error, warn, info, debug, trace.
+    log_level: warn
+
+    # 是否禁止等待网络，在拉取订阅之前
+    disable_waiting_network: false
+
+    ##### 网络接口和内核选项
+    # 如果你需要为其他局域网设备提供代理，需要绑定LAN接口，多个网卡","分割
+    #lan_interface: docker0, virbr0, waydroid0
+
+    # 如果你要代理本机流量，需要绑定WAN接口，多个接口","分割，也可以使用自动检测"auto"
+    wan_interface: auto
+
+    # 自动配置Linux内核参数。ip_forward和send_redirects
+    auto_config_kernel_parameter: true
+
+    ##### 节点连通性检查
+    # 如果你主机有双栈的话，检查链接需要有IPV4和IPV6
+    # 第一个是URL，其他可以指定IP
+    # 考虑到流量消耗，建议选择anycast IP（CDN）、响应数据少的站点。
+    #tcp_check_url: 'http://cp.cloudflare.com'
+    tcp_check_url: 'http://cp.cloudflare.com,1.1.1.1,2606:4700:4700::1111'
+
+    # 检查的HTTP请求方法
+    tcp_check_http_method: HEAD
+
+    # 用于检查节点的UDP连接. 如果dns_upstream配置包含 tcp, 同样可以用来检查TCP节点
+    # 第一个是URL，其他是IP
+    # 如果你主机有双栈的话，IPV4和IPV6都需要指定
+    #udp_check_dns: 'dns.google.com:53'
+    udp_check_dns: 'dns.google.com:53,8.8.8.8,2001:4860:4860::8888'
+
+    # 检查间隔
+    check_interval: 30s
+
+    # 当节点延迟差多少会切换节点
+    check_tolerance: 50ms
+
+
+    ##### 连接选项.
+    # 拨号模式：ip,domain,domain+,domain++
+    dial_mode: domain
+
+    # 是否允许不安全的TLS证书
+    allow_insecure: false
+
+    # 等待第一次嗅探数据发送的超时时间
+    # 如果dial_mode是ip，那么设置为0
+    #sniffing_timeout: 100ms
+
+    # tls实现，设置为tls则使用crypto/tls，设置为utls则使用uTLS，可以模仿浏览器的指纹
+    tls_implementation: tls
+
+    # utls要模仿的客户端，仅当utls时生效
+    # 参考 https://github.com/daeuniverse/dae/blob/331fa23c16/component/outbound/transport/tls/utls.go#L17
+    utls_imitate: chrome_auto
+}
+
+# 更多的 DNS 样例见 https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/dns.md
+dns {
+    upstream {
+        googledns: 'tcp+udp://dns.google.com:53'
+        alidns: 'udp://dns.alidns.com:53'
+        txdns: 'udp://119.29.29.29:53'
+        # txdns: 'https://doh.pub/dns-query:443'
+    }
+    routing {
+        # 根据DNS查询的请求，决定使用哪个DNS服务器
+        # 规则从上到下匹配
+        request {
+            # 全匹配和正则匹配
+            # qname(full: ok.com, regex: '^yes') -> googledns
+            # 内置出站:asis,reject
+            # 可用的方法 qname, qtype
+            # 广告拒绝
+            qname(geosite:category-ads-all) -> reject
+            # 这里的意思是google中是cn的域名使用alidns
+            qname(geosite:google@cn, geosite:cn, geosite:china-list, geosite:private, geosite:apple-cn) -> alidns
+            # 匹配后缀，匹配关键字
+            # qname(suffix: abc.com, keyword: google) -> googledns
+            qname(geosite:gfw, geosite:geolocation-!cn, keyword: bing) -> googledns
+            # DNS 请求类型
+            # ipv4和ipv6请求使用alidns
+            # qtype(a, aaaa) -> alidns
+            # cname请求googledns
+            # qtype(cname) -> googledns
+            # 默认DNS服务器
+            fallback: alidns
+        }
+        # 根据DNS查询的响应，决定接受或者使用另外一个DNS服务器重新查询记录
+        # 规则从上到下匹配
+        response {
+            # 内置出站：accept,reject
+            # 可用的方法：qname, qtype, upstream, ip.
+            # 如果是发送到googledns的请求响应，则接受，可用于避免循环
+            upstream(googledns) -> accept
+            # 意思是如果请求的域名不是国内网站，但是返回了一个私有的IP，那就是被污染了。重新通过googledns请求
+            ip(geoip:private) && !qname(geosite:cn) -> googledns
+            # 以上不匹配，默认
+            fallback: accept
+        }
+    }
+}
+
+subscription {
+    # 在下面填入你的订阅链接。
+    my_sub: "https://blogzone.me/link/DzNTf7uZaEksNl74?dae=1"
+}
+
+# 此处定义的节点将作为全局节点池的一部分。
+node {
+    # 在此添加节点链接。
+    # 支持 socks5, http, https, ss, ssr, vmess, vless, trojan, tuic, juicity, hysteria2 等。
+    # 完整支持列表：https://github.com/daeuniverse/dae/blob/main/docs/en/proxy-protocols.md
+    #'socks5://localhost:1080'
+    #mylink: 'ss://LINK'
+   # node1: 'vmess://LINK'
+   # node2: 'vless://LINK'
+   # my_chains: 'socks5://xNZ6867cdc40180c:0kJ9vPLF5UNhouq76f@43.166.135.112:45001 -> socks5://localhost:1080' # 节点链
+    #my_chains: 'socks5://localhost:1080 -> socks5://[[user:xNZ6867cdc40180c]pass@0kJ9vPLF5UNhouq76f]43.166.135.112:45001' # 节点链
+}
+
+group {
+    proxy_all {
+        #filter: !name(keyword: "日本")
+        filter: !name(regex: '(?i)HK', keyword: "香港", regex: '(?i)Hongkong')
+        policy: min_avg10
+    }
+    YouTube {
+        #filter: !name(keyword: "日本")
+        filter: !name(regex: '(?i)HK', keyword: "香港", regex: '(?i)Hongkong',
+                                  keyword: '台湾', regex: "(?i)Taiwan")
+        policy: min_avg10
+    }
+
+    Excellent {
+        filter: subtag(my_sub) && !name(keyword: "日本")
+        policy: min_avg10
+    }
+
+    Bing {
+        filter: name(keyword: '新加坡', keyword: "🇸🇬", regex: '(?i)Singapore',
+            regex: '(?i)chatgpt',
+            keyword: '美国', keyword: "🇺🇸", regex: '(?i)America',
+            keyword: '英国')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+
+    Google {
+        filter: name(
+            #regex: '(?i)HK', keyword: "香港", regex: '(?i)Hongkong',
+            keyword: '新加坡', keyword: "🇸🇬", regex: '(?i)Singapore',
+            regex: '(?i)chatgpt',
+            #keyword: '台湾', regex: "(?i)Taiwan",
+            keyword: '美国', keyword: "🇺🇸", regex: '(?i)America',
+            keyword: '英国')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Hongkong {
+        filter: name(keyword: 'HK', keyword: "香港", regex: '(?i)Hongkong')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Singapore {
+        filter: name(keyword: '新加坡', keyword: "🇸🇬", regex: '(?i)Singapore')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    ChatGPT {
+        #filter: name(my_chains)
+        ## 策略：由于只有一个节点链，使用固定索引0
+        #policy: fixed(0)
+        policy: min_avg10
+    }
+    Taiwan {
+        filter: name(keyword: '台湾', keyword: "(?i)Taiwan")
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    America {
+        filter: name(keyword: '美国', keyword: "🇺🇸", regex: '(?i)America')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Japan {
+        filter: name(keyword: '日本', keyword: "🇯🇵")
+            && !name(regex: "倍")
+        policy: min_avg10
+    }
+    UK {
+        filter: name(keyword: '英国')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Netflix {
+        filter: name(regex: '(?i)Netflix', keyword: '奈飞')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Korea {
+        filter: name(keyword: '韩国')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Sweden {
+        filter: name(keyword: '瑞典')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Australia {
+        filter: name(keyword: '澳大利亚')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    France {
+        filter: name(keyword: '法国')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Dubai {
+        filter: name(keyword: '迪拜')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Brazil {
+        filter: name(keyword: '巴西')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Switzerland {
+        filter: name(keyword: '瑞士')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+    Idian {
+        filter: name(keyword: '印度')
+            && !name(keyword: "日本")
+        policy: min_avg10
+    }
+}
+
+# 更多的 Routing 样例见 https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/routing.md
+routing {
+    ### 以下是预设规则
+
+    # 本地的网络管理器应该直连，以避免在绑定WAN接口的时候出现错误的网络连通性检查结果
+    pname(NetworkManager) -> direct
+
+    # 把它放在前面，可以防止多播应该发送到局域网的数据包被代理转发。
+    # "dip" 意思是目的IP.
+    dip(224.0.0.0/3, 'ff00::/8') -> direct
+
+    # 禁用 h3，因为它通常消耗很多 CPU 和内存资源
+    l4proto(udp) && dport(443) -> block
+
+    # 内置出站：block, direct, must_rules
+    # must_rules 表示不将DNS流量重定向至dae并继续匹配。
+    # 对于单条规则，"direct"和"must_direct"的区别在于"direct"会劫持并处理DNS请求（用于流量分割使用），而"must_direct"不会。
+    # 当存在 DNS 请求的回环时，"must_direct"很有用。
+    # "must_direct" 也可以写作 "direct(must)"。
+    # 同样，"must_groupname"也支持不劫持、处理 DNS 流量，相当于"groupname(must)"。
+    # groupname指的是出站分组
+    #domain(geosite:openai) -> ChatGPT
+    dip(geoip:cn, geoip:private) -> direct
+    domain(geosite:category-ads-all) -> block
+    dip(geoip:cn, geoip:private) -> direct
+    dip(geoip:cn) && dport(80) -> direct
+    domain(geosite:google@cn, geosite:cn) -> direct
+    domain(suffix: ".cn", suffix: cdn.steampipe.steamcontent.com, suffix: content.steamchina.com) -> direct
+
+    domain(geosite:bahamut) -> Taiwan
+
+    #domain(regex: '(?i)ipaddress') -> ChatGPT #proxy_all #Bing
+    domain(regex: '(?i)bing', keyword: bing, suffix: bing.com) -> proxy_all #Bing
+    domain(regex: '(?i)youtube') -> proxy_all #YouTube
+    domain(suffix: v2raya.org) -> proxy_all
+    domain(
+        full: devv.ai
+        , full: poe.com
+        , keyword: github
+        , full: aur.archlinux.org
+        , full: translate.yandex.com
+        , suffix: deepl.com
+        , suffix: medium.com
+        , suffix: docs.pola.rs
+        , suffix: arc.net
+    ) -> Excellent
+
+    dip(geoip:us, geoip:telegram) -> proxy_all
+
+    domain(full: cn.bing.com) -> block
+
+    domain(geosite:gfw, geosite:geolocation-!cn) -> proxy_all
+
+    dip(10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) -> direct
+    pname(curl) -> direct ## 进程名规则 (当绑定WAN接口是只支持本地进程)
+    pname(qbittorrent) -> direct ## 进程名规则 (当绑定WAN接口是只支持本地进程)
+
+    ## 目的IP规则
+    dip(8.8.8.8) -> proxy_all
+    # 单个IP段匹配
+    # dip(101.97.0.0/16) -> direct
+
+    ## 源IP规则
+    # sip(192.168.0.6, 192.168.0.10, 192.168.0.15) -> direct
+
+    ## 目的端口规则
+    # dport(80) -> direct # 单个端口
+    # dport(10080-30000) -> direct # 端口范围
+
+    ## 源端口规则
+    # sport(38563) -> direct # 单个端口
+    # sport(10080-30000) -> direct # 端口范围
+
+    ## 四层协议规则:
+    # tcp
+    l4proto(tcp) -> proxy_all
+    # udp
+    l4proto(udp) -> direct
+
+    ## DSCP规则 (匹配 DSCP; 对于绕过BT有用).
+    # See https://github.com/daeuniverse/dae/discussions/295
+    dscp(0x4) -> direct
+
+    # dip(8.8.8.8) && l4proto(tcp) && dport(1-1023, 8443) -> proxy_all
+    # dip(1.1.1.1) && sip(10.0.0.1, 172.20.0.0/16) -> direct
+
+    ## “非“规则
+    # 下面代表，域名不是geosite类型为google-scholar或者category-scholar-!cn或者category-scholar-cn
+    !domain(geosite:google-scholar,
+        geosite:category-scholar-!cn,
+        geosite:category-scholar-cn
+    ) -> proxy_all
+
+    ## 更复杂的规则
+    domain(geosite:geolocation-!cn) &&
+        !domain(geosite:google-scholar,
+            geosite:category-scholar-!cn,
+            geosite:category-scholar-cn
+        ) -> proxy_all
+
+    ## Must rules
+    # 对于以下规则，DNS请求将会被强制重定向到dae，除了mosdns的请求
+    # 不同于must_direct/must_my_group，来自mosdns的流量会继续匹配其他规则
+    pname(mosdns) -> must_rules
+
+    fallback: proxy_all
+
+    ## IP版本规则:
+    # IPv4
+    # ipversion(4) -> block
+    # IPv6
+    # ipversion(6) -> ipv6_group
+
+    ## 自定义 DAT 文件
+    # domain(ext:"yourdatfile.dat:yourtag")->direct
+    # dip(ext:"yourdatfile.dat:yourtag")->direct
+
+    ## 设置 fwmark（Firewall Mark）
+    # 当您想要将流量重定向到特定接口（例如wireguard）或用于其他高级用途时，标记非常有用
+    # 以下是将Disney的流量重定向到wg0接口的过程
+    # You need set ip rule and ip table like this:
+    # 1. Set all traffic with mark 0x800/0x800 to use route table 1145:
+    # >> ip rule add fwmark 0x800/0x800 table 1145
+    # >> ip -6 rule add fwmark 0x800/0x800 table 1145
+    # 2. Set default route of route table 1145:
+    # >> ip route add default dev wg0 scope global table 1145
+    # >> ip -6 route add default dev wg0 scope global table 1145
+    # Notice that interface wg0, mark 0x800, table 1145 can be set by preferences, but cannot conflict.
+    # 3. Set routing rules in dae config file.
+    # domain(geosite:disney) -> direct(mark: 0x800)
+
+    ## 源MAC规则
+    # mac('02:42:ac:11:00:02') -> direct
+
+}

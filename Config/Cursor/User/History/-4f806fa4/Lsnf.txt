@@ -1,0 +1,135 @@
+!Software Version V200R003C00SPC300
+#
+sysname Quidway
+#
+vlan batch 1 to 24 4000
+#
+undo nap slave enable
+#
+aaa
+ authentication-scheme default
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+ domain default_admin
+ local-user admin password cipher %@%@5d~9:M^ipCfL\iB)EQd>3Uwe%@%@
+ local-user admin service-type telnet terminal ssh http
+ local-user admin123 password cipher %@%@[.*M'RuWx$j.5UQG9W0PM"nt%@%@
+ local-user admin123 privilege level 15
+ local-user admin123 service-type telnet terminal ssh http
+#
+interface Vlanif1
+#
+interface Vlanif4000
+ ip address 10.11.40.2 255.255.255.0
+#                                         
+interface MEth0/0/1                       
+#                                         
+interface GigabitEthernet0/0/1            
+#                                         
+interface GigabitEthernet0/0/2            
+ port link-type access                    
+ port default vlan 2                      
+#                                         
+interface GigabitEthernet0/0/3            
+ port link-type access                    
+ port default vlan 3                      
+#                                         
+interface GigabitEthernet0/0/4            
+ port link-type access                    
+ port default vlan 4                      
+#                                         
+interface GigabitEthernet0/0/5            
+ port link-type access                    
+ port default vlan 5                      
+#                                         
+interface GigabitEthernet0/0/6            
+ port link-type access                    
+ port default vlan 6                      
+#                                         
+interface GigabitEthernet0/0/7            
+ port link-type access                    
+ port default vlan 7                      
+#                                         
+interface GigabitEthernet0/0/8            
+ port link-type access                    
+ port default vlan 8                      
+#                                         
+interface GigabitEthernet0/0/9            
+ port link-type access                    
+ port default vlan 9                      
+#                                         
+interface GigabitEthernet0/0/10           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/11           
+ port link-type access                    
+ port default vlan 11                     
+#                                         
+interface GigabitEthernet0/0/12           
+ port link-type access                    
+ port default vlan 12                     
+#                                         
+interface GigabitEthernet0/0/13           
+ port link-type trunk                     
+ port trunk allow-pass vlan 2 to 13 4000  
+#                                         
+interface GigabitEthernet0/0/14           
+ port link-type trunk                     
+ port trunk allow-pass vlan 15 to 24 4000 
+#                                         
+interface GigabitEthernet0/0/15           
+ port link-type access                    
+ port default vlan 15                     
+#                                         
+interface GigabitEthernet0/0/16           
+ port link-type access                    
+ port default vlan 16                     
+#                                         
+interface GigabitEthernet0/0/17           
+ port link-type access                    
+ port default vlan 17                     
+#                                         
+interface GigabitEthernet0/0/18           
+ port link-type access                    
+ port default vlan 18                     
+#                                         
+interface GigabitEthernet0/0/19           
+ port link-type access                    
+ port default vlan 19                     
+#                                         
+interface GigabitEthernet0/0/20           
+ port link-type access                    
+ port default vlan 20                     
+#                                         
+interface GigabitEthernet0/0/21           
+ port link-type access                    
+ port default vlan 21                     
+#                                         
+interface GigabitEthernet0/0/22           
+ port link-type access                    
+ port default vlan 22                     
+#                                         
+interface GigabitEthernet0/0/23           
+ port link-type access                    
+ port default vlan 23                     
+#                                         
+interface GigabitEthernet0/0/24           
+ port link-type trunk                     
+ port trunk allow-pass vlan 1 to 23       
+#                                         
+interface NULL0                           
+#                                         
+ip route-static 0.0.0.0 0.0.0.0 10.11.40.1
+#                                         
+stelnet server enable                     
+ssh authentication-type default password  
+#                                         
+user-interface con 0                      
+user-interface vty 0 4                    
+ authentication-mode aaa                  
+ protocol inbound all                     
+user-interface vty 16 20                  
+#                                       
+

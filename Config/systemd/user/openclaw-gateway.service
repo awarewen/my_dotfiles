@@ -1,0 +1,21 @@
+[Unit]
+Description=OpenClaw Gateway (v2026.2.9)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart="/usr/bin/node" "/home/awarewen/.npm-global/lib/node_modules/openclaw/dist/index.js" gateway --port 18789
+Restart=always
+RestartSec=5
+KillMode=process
+Environment=HOME=/home/awarewen
+Environment="PATH=/home/awarewen/.local/share/pnpm:/home/awarewen/.local/bin:/home/awarewen/.npm-global/bin:/home/awarewen/bin:/home/awarewen/.nvm/current/bin:/home/awarewen/.fnm/current/bin:/home/awarewen/.volta/bin:/home/awarewen/.asdf/shims:/home/awarewen/.bun/bin:/usr/local/bin:/usr/bin:/bin"
+Environment=OPENCLAW_GATEWAY_PORT=18789
+Environment=OPENCLAW_GATEWAY_TOKEN=f290d9024568e2a4dfc2f580ade88c1f4e85e858a17d5428
+Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
+Environment=OPENCLAW_SERVICE_MARKER=openclaw
+Environment=OPENCLAW_SERVICE_KIND=gateway
+Environment=OPENCLAW_SERVICE_VERSION=2026.2.9
+
+[Install]
+WantedBy=default.target

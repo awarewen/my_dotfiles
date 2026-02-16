@@ -1,0 +1,83 @@
+#theme = "boo-berry"
+
+[editor]
+scrolloff = 5
+mouse = false
+middle-click-paste = true
+scroll-lines = 3
+shell = ["sh","-c"]
+line-number = "relative"
+cursorline = true
+cursorcolumn = false
+gutters = ["diagnostics","spacer","line-numbers","spacer","diff"]
+auto-completion = true
+auto-format =false
+auto-save = false
+idle-timeout = 250
+preview-completion-insert = true
+completion-trigger-len = 2
+completion-replace = true
+auto-info = true
+true-color = true
+undercurl = true
+#rulers = []
+bufferline = "always"
+color-modes = true
+text-width = 80
+#workspace-lsp-roots = []
+#default-line-ending = ""
+insert-final-newline = true
+
+[editor.statusline]
+#left = ["mode", "spinner", "spinner", "diagnostics", "separator", "selections", "separator", "position-percentage", "separator", "position"]
+left = ["mode", "separator", "read-only-indicator", "file-name", "file-modification-indicator"]
+center = []
+right = ["register", "separator", "version-control", "separator", "file-encoding", "separator", "file-line-ending", "separator", "file-type", "separator", "spinner", "diagnostics", "separator", "selections", "separator", "position-percentage", "separator", "position"]
+
+separator = "│"
+mode.normal = "N"
+mode.insert = "I"
+mode.select = "S"
+
+[editor.lsp]
+enable = true
+display-messages = true
+auto-signature-help = true
+display-inlay-hints = true
+display-signature-help-docs = true
+snippets = true
+goto-reference-include-declaration = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.auto-pairs]
+'(' = ')'
+'{' = '}'
+'[' = ']'
+'"' = '"'
+'`' = '`'
+'<' = '>'
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+newline = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+tab = "→"
+newline = "⏎"
+tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+[editor.indent-guides]
+render = true
+character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 1
+
